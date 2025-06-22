@@ -49,38 +49,13 @@
 			<!-- End Google Tag Manager --></script>
 
 			<!-- OneSignal -->
-			<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
-    try {
-      console.log("⏳ Inicializace OneSignal...");
-      await OneSignal.init({
-        appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-        serviceWorkerPath: "https://mkudrna.github.io/MKSsubscriber/OneSignalSDKWorker.js",
-        serviceWorkerParam: {
-          scope: "/MKSsubscriber/"
-        },
-        path: "/MKSsubscriber/",
-        promptOptions: {
-          slidedown: {
-            prompts: [{
-              type: "push",
-              autoPrompt: true,
-              text: {
-                actionMessage: "Chceš dostávat upozornění na program kina?",
-                acceptButton: "Ano!",
-                cancelButton: "Ne, díky"
-              }
-            }]
-          }
-        },
-        notifyButton: { enable: true }
-      });
-      console.log("✅ SDK inicializováno");
-    } catch (e) {
-      console.error("❌ Chyba při inicializaci SDK:", e);
-    }
+    await OneSignal.init({
+      appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+    });
   });
 </script>
 			</head>
