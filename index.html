@@ -46,7 +46,17 @@
 				j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
 				f.parentNode.insertBefore(j,f);
 			})(window,document,'script','gtmDataLayer','GTM-W9MWVBQV');
-			<!-- End Google Tag Manager --></script></head>
+			<!-- End Google Tag Manager --></script>
+			<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+			<script>
+			  window.OneSignalDeferred = window.OneSignalDeferred || [];
+			  OneSignalDeferred.push(async function(OneSignal) {
+			    await OneSignal.init({
+			      appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+			    });
+			  });
+			</script>
+			</head>
 <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe"><!-- Google Tag Manager (noscript) -->
 			<noscript>
 				<iframe
