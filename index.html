@@ -49,48 +49,18 @@
 			<!-- End Google Tag Manager --></script>
 
 			<!-- OneSignal -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      console.log("⏳ Inicializace OneSignal...");
-
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function (OneSignal) {
-        await OneSignal.init({
-          appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-          serviceWorkerPath: "OneSignalSDKWorker.js",
-          serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js",
-          promptOptions: {
-            slidedown: {
-              enabled: true,
-              autoPrompt: true
-            }
-          },
-          notifyButton: {
-            enable: true,
-            position: 'bottom-right',
-            showCredit: false,
-            theme: 'default',
-            size: 'medium',
-            text: {
-              'tip.state.unsubscribed': 'Přihlásit se k notifikacím',
-              'tip.state.subscribed': 'Odběr notifikací aktivní',
-              'tip.state.blocked': 'Odběr blokován',
-              'message.prenotify': 'Klikněte pro zapnutí upozornění',
-              'message.action.subscribed': 'Notifikace zapnuty',
-              'message.action.resubscribed': 'Odběr opět aktivní',
-              'message.action.unsubscribed': 'Notifikace vypnuty',
-              'dialog.main.title': 'Správa upozornění',
-              'dialog.main.button.subscribe': 'Povolit',
-              'dialog.main.button.unsubscribe': 'Zrušit',
-              'dialog.blocked.title': 'Blokováno',
-              'dialog.blocked.message': 'Změňte nastavení prohlížeče pro povolení.'
-            }
-          }
-        });
-
-        console.log("✅ SDK inicializováno");
-      });
-    </script>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+  window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+      notifyButton: {
+        enable: true, // => zvoneček se zobrazí
+      },
+    });
+  });
+</script>
 			</head>
 <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe"><!-- Google Tag Manager (noscript) -->
 			<noscript>
