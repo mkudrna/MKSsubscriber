@@ -48,34 +48,20 @@
 			})(window,document,'script','gtmDataLayer','GTM-W9MWVBQV');
 			<!-- End Google Tag Manager --></script>
 
-			<!-- OneSignal -->
+			
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-  
+  <!-- OneSignal -->
   <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      console.log("⏳ Inicializace OneSignal...");
-
-      await OneSignal.init({
-        appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-        notifyButton: {
-          enable: true,           // Aktivuje zvoneček
-          position: 'bottom-right',
-          theme: 'default',
-          size: 'medium',
-        },
-        serviceWorkerParam: { scope: "/" },
-        serviceWorkerPath: "OneSignalSDKWorker.js",
-        serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js"
-      });
-
-      console.log("✅ SDK inicializováno");
-
-      // Test přihlášení
-      const isEnabled = await OneSignal.isPushNotificationsEnabled();
-      console.log("🔔 Notifikace povoleny:", isEnabled);
+  window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+      notifyButton: {
+        enable: true,
+      },
     });
-  </script>
+  });
+</script>
 			</head>
 <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe"><!-- Google Tag Manager (noscript) -->
 			<noscript>
