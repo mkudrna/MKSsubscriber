@@ -49,12 +49,17 @@
 			<!-- End Google Tag Manager --></script>
 
 			
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
+  window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
       appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+      notifyButton: {
+        enable: true,
+        size: 'medium', // volitelně
+        theme: 'default', // volitelně
+        position: 'bottom-right', // nebo 'bottom-left'
+      },
     });
   });
 </script>
