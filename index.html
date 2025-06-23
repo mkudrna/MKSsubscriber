@@ -54,25 +54,6 @@
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-	    /* 🔔 zvoneček můžeš klidně ponechat */
-      notifyButton: { enable: true, position: 'bottom-right' },
-
-      /* ➕ vlastní odkaz */
-      promptOptions: {
-        customlink: {
-          enabled: true,               // zapnout
-          style:   "button",           // "link" | "button"
-          size:    "medium",           // small | medium | large
-          unsubscribeEnabled: true,    // zobrazí i tlačítko „Odhlásit“
-          text: {
-            /* CZ popisky – libovolně uprav */
-            subscribe:    "Zapnout notifikace",
-            unsubscribe:  "Vypnout notifikace",
-            resubscribe:  "Znovu povolit notifikace",
-            blocked:      "Notifikace jsou zablokované"
-          }
-        }
-      }
     });
   });
 </script>
@@ -214,12 +195,12 @@
 						<div class="ez cf wnd-no-cols">
 	<div class="ez-c"><div class="b b-text cf">
 	<div class="b-c b-text-c b-s b-s-t60 b-s-b60 b-cs cf"><h1 class="wnd-align-center"><strong>Městské kulturní středisko Trhové Sviny</strong></h1></div>
-
-	<div class="onesignal-customlink-container"></div>
-		
+	
 </div><div class="b b-s b-hr-line line-auto">
     <hr class="line-style line-color">
-</div></div>
+</div>
+	
+	</div>
 </div>
 					</div>
 				</div>
