@@ -54,6 +54,25 @@
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+	    /* 🔔 zvoneček můžeš klidně ponechat */
+      notifyButton: { enable: true, position: 'bottom-right' },
+
+      /* ➕ vlastní odkaz */
+      promptOptions: {
+        customlink: {
+          enabled: true,               // zapnout
+          style:   "button",           // "link" | "button"
+          size:    "medium",           // small | medium | large
+          unsubscribeEnabled: true,    // zobrazí i tlačítko „Odhlásit“
+          text: {
+            /* CZ popisky – libovolně uprav */
+            subscribe:    "Zapnout notifikace",
+            unsubscribe:  "Vypnout notifikace",
+            resubscribe:  "Znovu povolit notifikace",
+            blocked:      "Notifikace jsou zablokované"
+          }
+        }
+      }
     });
   });
 </script>
