@@ -91,33 +91,51 @@
       -->
             
       <!-- OneSignal initialization with e-mail -->
-      <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-			<script>
-				window.OneSignalDeferred = window.OneSignalDeferred || [];
-   			OneSignalDeferred.push(function (OneSignal) {
-     		OneSignal.init({
-       		appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-       		serviceWorkerPath: "OneSignalSDKWorker.js",
-       		serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js"
-     		});
-   
-     		const form = document.getElementById("email-form");
-     		const input = document.getElementById("email-input");
-     		const status = document.getElementById("status-message");
-   
-     		form.addEventListener("submit", async (e) => {
-       	e.preventDefault();
-       	const email = input.value;
-       	try {
-         	await OneSignal.User.addEmail(email);
-         	status.textContent = "E-mail byl úspěšně uložen.";
-       	} catch (err) {
-         	console.error("Chyba při ukládání e-mailu:", err);
-         	status.textContent = "Nepodařilo se uložit e-mail.";
-       	}
-     		});
-   	});
-	 </script>
+      <script>
+	  window.OneSignalDeferred = window.OneSignalDeferred || [];
+	  OneSignalDeferred.push(function (OneSignal) {
+	    OneSignal.init({
+	      appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+	      serviceWorkerPath: "OneSignalSDKWorker.js",
+	      serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js"
+	    });
+	
+	    const form = document.getElementById("email-form");
+	    const input = document.getElementById("email-input");
+	    const status = document.getElementById("status-message");
+	
+	    form.addEventListener("submit", async (e) => {
+	      e.preventDefault();
+	      try {
+	        await OneSignal.User.addEmail(input.value);
+	        status.textContent = "E-mail byl úspěšně uložen.";
+	      } catch (err) {
+	        console.error(err);
+	        status.textContent = "Nepodařilo se uložit e-mail.";
+	      }
+	    });
+	
+	    window.removeEmail = async () => {
+	      try {
+	        await OneSignal.User.removeEmail();
+	        status.textContent = "E-mail byl odstraněn.";
+	      } catch (err) {
+	        console.error(err);
+	        status.textContent = "Nepodařilo se smazat e-mail.";
+	      }
+	    };
+	
+	    window.unsubscribePush = async () => {
+	      try {
+	        await OneSignal.Notifications.unsubscribe();
+	        status.textContent = "Push notifikace byly odhlášeny.";
+	      } catch (err) {
+	        console.error(err);
+	        status.textContent = "Nepodařilo se odhlásit push notifikace.";
+	      }
+	    };
+	  });
+	</script>
    </head>
    
    <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe">
@@ -253,12 +271,39 @@
                                              </div>
                                              
                                              <!-- OneSignalForm -->
-                                             <form id="email-form">
-                                               <input type="email" id="email-input" placeholder="Zadejte váš e-mail" required>
-                                               <button type="submit">Odebírat novinky</button>
-                                               <div id="status-message"></div>
-                                             </form>
-                                             <hr />
+                                             <form id="email-form" style="margin-bottom: 20px;">
+						  <input
+						    type="email"
+						    id="email-input"
+						    placeholder="Zadejte váš e-mail"
+						    required
+						    style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;"
+						  />
+						  <button
+						    type="submit"
+						    style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;"
+						  >
+						    Odebírat novinky
+						  </button>
+						  <button
+						    type="button"
+						    onclick="removeEmail()"
+						    style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 10px;"
+						  >
+						    Smazat e-mail
+						  </button>
+						</form>
+						
+						<!-- Volitelné odhlášení push notifikací -->
+						<button
+						  onclick="unsubscribePush()"
+						  style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;"
+						>
+						  Odhlásit push notifikace
+						</button>
+						
+						<div id="status-message" style="margin-top: 10px; font-size: 14px; color: white;"></div>
+                                             
                                              <div class="onesignal-customlink-container" align="center"></div>
                                           </div>
                                        </div>
