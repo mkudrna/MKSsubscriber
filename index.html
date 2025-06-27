@@ -93,45 +93,31 @@
       <!-- OneSignal initialization with e-mail -->
       <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
       <script>
-         window.OneSignalDeferred = window.OneSignalDeferred || [];
-         OneSignalDeferred.push(function (OneSignal) {
-            OneSignal.init({
-               appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-               serviceWorkerPath: "OneSignalSDKWorker.js",
-               serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js",
-               notifyButton: {
-                  enable: false
-               }
-            });
-         
-         const statusEl = document.getElementById("status-message");
-         
-         // Push subscription button
-         document.getElementById("push-subscribe-btn").addEventListener("click", async () => {
-         try {
-         await OneSignal.Notifications.requestPermission();
-         statusEl.textContent = "Push notifikace byly úspěšně aktivovány.";
-         } catch (err) {
-         console.error("Push error:", err);
-         statusEl.textContent = "Chyba při aktivaci push notifikací.";
-         }
-         });
-         
-         // Email submit
-         document.getElementById("email-form").addEventListener("submit", async (e) => {
-         e.preventDefault();
-         const email = document.getElementById("email-input").value;
-         
-         try {
-         await OneSignal.User.addEmail(email);
-         statusEl.textContent = "E-mail byl úspěšně uložen do OneSignal.";
-         } catch (err) {
-         console.error("Email error:", err);
-         statusEl.textContent = "Nepodařilo se uložit e-mail.";
-         }
-         });
-         });
-      </script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(function (OneSignal) {
+    OneSignal.init({
+      appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+      serviceWorkerPath: "OneSignalSDKWorker.js",
+      serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js"
+    });
+
+    const form = document.getElementById("email-form");
+    const input = document.getElementById("email-input");
+    const status = document.getElementById("status-message");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = input.value;
+      try {
+        await OneSignal.User.addEmail(email);
+        status.textContent = "E-mail byl úspěšně uložen.";
+      } catch (err) {
+        console.error("Chyba při ukládání e-mailu:", err);
+        status.textContent = "Nepodařilo se uložit e-mail.";
+      }
+    });
+  });
+</script>
    </head>
    
    <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe">
@@ -267,13 +253,12 @@
                                              </div>
                                              
                                              <!-- OneSignalForm -->
-                                             <div>
-                                                <form id="email-form">
-                                                   <label for="email-input">📧 Zadejte e-mail:</label>
-                                                   <input type="email" id="email-input" required placeholder="např. jan.novak@email.cz" />
-                                                   <button type="submit">Odeslat e-mail do OneSignal</button>
-                                               </form>
-                                             </div>
+                                             <form id="email-form">
+                                               <input type="email" id="email-input" placeholder="Zadejte váš e-mail" required>
+                                               <button type="submit">Odebírat novinky</button>
+                                               <div id="status-message"></div>
+                                             </form>
+                                             <hr />
                                              <div class="onesignal-customlink-container" align="center"></div>
                                              <div>
                                                 <button
