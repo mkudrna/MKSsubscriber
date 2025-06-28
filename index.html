@@ -88,33 +88,6 @@
            });
          });
       </script>
-
-      <!-- OneSignal inicialization for e-mails -->
-      <script>
-        async function unsubscribeEmail() {
-        const emailInput = document.getElementById("email-input");
-        const email = emailInput.value.trim();
-      
-        if (!email) {
-          alert("Zadejte prosím e-mail.");
-          return;
-        }
-      
-        const response = await fetch("/.netlify/functions/unsubscribeEmail", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
-        });
-      
-        const result = await response.json();
-      
-        if (response.ok) {
-          alert("E-mail byl úspěšně odhlášen.");
-        } else {
-          alert(`Chyba: ${result.error || "Nepodařilo se odhlásit e-mail."}`);
-        }
-      }
-      </script>
    </head>
    
    <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe">
@@ -335,5 +308,31 @@
             </footer>
          </div>
       </div>
+      <!-- OneSignal inicialization for e-mails -->
+         <script>
+           async function unsubscribeEmail() {
+           const emailInput = document.getElementById("email-input");
+           const email = emailInput.value.trim();
+         
+           if (!email) {
+             alert("Zadejte prosím e-mail.");
+             return;
+           }
+         
+           const response = await fetch("/.netlify/functions/unsubscribeEmail", {
+             method: "POST",
+             headers: { "Content-Type": "application/json" },
+             body: JSON.stringify({ email })
+           });
+         
+           const result = await response.json();
+         
+           if (response.ok) {
+             alert("E-mail byl úspěšně odhlášen.");
+           } else {
+             alert(`Chyba: ${result.error || "Nepodařilo se odhlásit e-mail."}`);
+           }
+         }
+         </script>
    </body>
 </html>
