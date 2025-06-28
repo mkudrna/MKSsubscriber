@@ -245,76 +245,19 @@
                                              </div>
 
                                              <!-- HTML -->
-<form id="email-form">
-  <input type="email" id="email-input" placeholder="Zadejte váš e-mail" required
-    style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;" />
-  <button type="submit"
-    style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
-    Odebírat novinky
-  </button>
-  <button type="button" id="remove-email-btn"
-    style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 10px;">
-    Smazat e-mail
-  </button>
-</form>
-
-<button type="button" id="unsubscribe-push-btn"
-  style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 10px;">
-  Odhlásit push notifikace
-</button>
-
-<div id="status-message" style="margin-top: 10px; font-size: 14px; color: white;"></div>
-
-<!-- OneSignal SDK -->
-<!-- JavaScript: funkce mimo OneSignalDeferred -->
-<script>
-  async function removeEmail() {
-    try {
-      await OneSignal.User.removeEmail();
-      document.getElementById("status-message").textContent = "E-mail byl odstraněn.";
-    } catch (err) {
-      console.error(err);
-      document.getElementById("status-message").textContent = "Nepodařilo se smazat e-mail.";
-    }
-  }
-
-  async function unsubscribePush() {
-    try {
-      await OneSignal.Notifications.unsubscribe();
-      document.getElementById("status-message").textContent = "Push notifikace byly odhlášeny.";
-    } catch (err) {
-      console.error(err);
-      document.getElementById("status-message").textContent = "Nepodařilo se odhlásit push notifikace.";
-    }
-  }
-
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(function (OneSignal) {
-    OneSignal.init({
-      appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-      serviceWorkerPath: "OneSignalSDKWorker.js",
-      serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js"
-    });
-
-    document.getElementById("email-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const email = document.getElementById("email-input").value;
-      try {
-        await OneSignal.User.addEmail(email);
-        document.getElementById("status-message").textContent = "E-mail byl úspěšně uložen.";
-      } catch (err) {
-        console.error(err);
-        document.getElementById("status-message").textContent = "Nepodařilo se uložit e-mail.";
-      }
-    });
-  });
-
-  // Globální navázání posluchačů mimo OneSignal init
-  window.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("remove-email-btn").addEventListener("click", removeEmail);
-    document.getElementById("unsubscribe-push-btn").addEventListener("click", unsubscribePush);
-  });
-</script>
+                                             <form id="email-form">
+                                               <input type="email" id="email-input" placeholder="Zadejte váš e-mail" required
+                                                 style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;" />
+                                               <button type="submit"
+                                                 style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
+                                                 Odebírat novinky
+                                               </button>
+                                               <button type="button" id="remove-email-btn"
+                                                 style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 10px;">
+                                                 Smazat e-mail
+                                               </button>
+                                             </form>
+                                             <div id="status-message" style="margin-top: 10px; font-size: 14px; color: white;"></div>
                                              
                                           </div>
                                        </div>
