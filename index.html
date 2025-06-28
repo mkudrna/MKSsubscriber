@@ -88,6 +88,49 @@
            });
          });
       </script>
+
+      <!-- OneSignal inicialization for e-mails -->
+      <script>
+ 
+          // Registrace e-mailu
+          window.subscribeEmail = async function () {
+            const email = document.getElementById("email-input").value.trim();
+            const status = document.getElementById("status-message");
+      
+            if (!email || !email.includes("@")) {
+              status.textContent = "Zadejte platný e-mail.";
+              return;
+            }
+      
+            try {
+              await OneSignal.User.addEmail(email);
+              status.textContent = "E-mail byl úspěšně zaregistrován k odběru.";
+            } catch (error) {
+              console.error("Chyba při registraci e-mailu:", error);
+              status.textContent = "Nepodařilo se zaregistrovat e-mail.";
+            }
+          };
+      
+          // Odhlášení e-mailu
+          window.unsubscribeEmail = async function () {
+            const email = document.getElementById("email-input").value.trim();
+            const status = document.getElementById("status-message");
+      
+            if (!email || !email.includes("@")) {
+              status.textContent = "Zadejte e-mail, který chcete odhlásit.";
+              return;
+            }
+      
+            try {
+              await OneSignal.User.removeEmail(email);
+              status.textContent = "E-mail byl úspěšně odhlášen z odběru.";
+            } catch (error) {
+              console.error("Chyba při odhlášení e-mailu:", error);
+              status.textContent = "Nepodařilo se odhlásit e-mail.";
+            }
+          };
+        });
+      </script>
    </head>
    
    <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe">
