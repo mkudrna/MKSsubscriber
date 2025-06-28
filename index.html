@@ -234,6 +234,7 @@
                                                 <div class="onesignal-customlink-container" align="center"></div>
                                                 
                                              </div>
+                                             
                                              <div align="center" style="max-width: 600px; margin: 2em auto; font-family: Metropolis,Metropolis-Fallback,Apple Color Emoji,Noto Color Emoji,sans-serif; font-size: 16px; line-height: 1.6; border: 1px solid #ddd; padding: 1.5em; background: #fff; color: #666; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">   
                                                 <p style="margin-top: 1.5em;">
                                                   📱 Používáte raději mobilní zařízení? Stačí naskenovat tento QR kód a přihlásit se k odběru oznámení přímo ve vašem mobilu.
@@ -242,6 +243,81 @@
                                                   <img src="qr_with_logo.png" alt="QR kód pro přihlášení k odběru" style="max-width: 200px; width: 100%; border: 1px solid #ccc; border-radius: 4px;" />
                                                 </div>
                                              </div>
+
+                                             <!-- HTML -->
+<form id="email-form">
+  <input type="email" id="email-input" placeholder="Zadejte váš e-mail" required
+    style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;" />
+  <button type="submit"
+    style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
+    Odebírat novinky
+  </button>
+  <button type="button" id="remove-email-btn"
+    style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 10px;">
+    Smazat e-mail
+  </button>
+</form>
+
+<button type="button" id="unsubscribe-push-btn"
+  style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 10px;">
+  Odhlásit push notifikace
+</button>
+
+<div id="status-message" style="margin-top: 10px; font-size: 14px; color: white;"></div>
+
+<!-- OneSignal SDK -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+<!-- JavaScript: funkce mimo OneSignalDeferred -->
+<script>
+  async function removeEmail() {
+    try {
+      await OneSignal.User.removeEmail();
+      document.getElementById("status-message").textContent = "E-mail byl odstraněn.";
+    } catch (err) {
+      console.error(err);
+      document.getElementById("status-message").textContent = "Nepodařilo se smazat e-mail.";
+    }
+  }
+
+  async function unsubscribePush() {
+    try {
+      await OneSignal.Notifications.unsubscribe();
+      document.getElementById("status-message").textContent = "Push notifikace byly odhlášeny.";
+    } catch (err) {
+      console.error(err);
+      document.getElementById("status-message").textContent = "Nepodařilo se odhlásit push notifikace.";
+    }
+  }
+
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(function (OneSignal) {
+    OneSignal.init({
+      appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+      serviceWorkerPath: "OneSignalSDKWorker.js",
+      serviceWorkerUpdaterPath: "OneSignalSDKUpdaterWorker.js"
+    });
+
+    document.getElementById("email-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email-input").value;
+      try {
+        await OneSignal.User.addEmail(email);
+        document.getElementById("status-message").textContent = "E-mail byl úspěšně uložen.";
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status-message").textContent = "Nepodařilo se uložit e-mail.";
+      }
+    });
+  });
+
+  // Globální navázání posluchačů mimo OneSignal init
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("remove-email-btn").addEventListener("click", removeEmail);
+    document.getElementById("unsubscribe-push-btn").addEventListener("click", unsubscribePush);
+  });
+</script>
+                                             
                                           </div>
                                        </div>
                                     </div>
