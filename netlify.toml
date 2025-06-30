@@ -1,2 +1,2 @@
 [functions]
-directory = "MKSsubscriber-main/netlify/functions"
+directory = "netlify/functions"
