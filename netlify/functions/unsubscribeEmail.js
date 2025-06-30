@@ -23,7 +23,6 @@ exports.handler = async function (event, context) {
 
     const players = response.data.players || [];
 
-    // Oprava: tags je objekt, ne pole
     const player = players.find((p) => {
       const tags = p.tags || {};
       return tags.email === email;
@@ -36,15 +35,14 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // Zde ale POZOR: DELETE může být nevhodné, pokud OneSignal daný endpoint vůbec neumožňuje.
-    // Doporučuje se místo DELETE použít:
-    // PUT https://onesignal.com/api/v1/players/:id a změnit stav notifikací
-
+    // Změníme tag subscribed na false
     await axios.put(
       `https://onesignal.com/api/v1/players/${player.id}`,
       {
         app_id: process.env.ONESIGNAL_APP_ID,
-        notification_types: -2, // unsubscribe
+        tags: {
+          subscribed: "false",
+        },
       },
       {
         headers: {
@@ -56,7 +54,7 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "E-mail byl odhlášen." }),
+      body: JSON.stringify({ message: "Odběr byl zrušen nastavením tagu." }),
     };
   } catch (error) {
     console.error("Chyba při odhlašování:", error.message);
