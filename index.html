@@ -264,7 +264,7 @@
                                                    <div class="ez-c">
                                                        <div class="b b-text cf">
                                                            <div class="b-c b-text-c b-s b-s-t60 b-s-b60 b-cs cf">
-                                                               <h1 class="wnd-align-center"><strong>Městské B kulturní středisko Trhové Sviny</strong></h1>
+                                                               <h1 class="wnd-align-center"><strong>Městské kulturní středisko Trhové Sviny</strong></h1>
                                                            </div>
                                                        </div>
                                                        <div class="b b-s b-hr-line line-auto">
@@ -321,7 +321,33 @@
                                                                </button>
                                                            </form>
                                                            <div id="status-message"
-                                                                style="margin-top: 10px; font-size: 14px; color: white;"></div>
+                                                                style="margin-top: 10px; font-size: 14px; color: white;">
+                                                           </div>
+                                                           <script>
+                                                               async function unsubscribeEmail() {
+                                                                 const emailInput = document.getElementById("email-input");
+                                                                 const email = emailInput.value.trim();
+
+                                                                 if (!email) {
+                                                                   alert("Zadejte prosím e-mail.");
+                                                                   return;
+                                                                 }
+
+                                                                 const response = await fetch("/.netlify/functions/unsubscribeEmail", {
+                                                                   method: "POST",
+                                                                   headers: { "Content-Type": "application/json" },
+                                                                   body: JSON.stringify({ email })
+                                                                 });
+
+                                                                 const result = await response.json();
+
+                                                                 if (response.ok) {
+                                                                   alert("E-mail byl úspěšně odhlášen.");
+                                                                 } else {
+                                                                   alert(`Chyba: ${result.error || "Nepodařilo se odhlásit e-mail."}`);
+                                                                 }
+                                                               }
+                                                           </script>
                                                        </div>
 
                                                    </div>
