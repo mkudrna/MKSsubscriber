@@ -1,8 +1,5 @@
 const axios = require("axios");
 
-const ONESIGNAL_APP_ID = "732781c6-651b-4e12-aa7a-64cacc82c61d"; // veřejný
-const ONESIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY; // tajný
-
 exports.handler = async function (event) {
   const { email } = JSON.parse(event.body || "{}");
 
@@ -14,49 +11,46 @@ exports.handler = async function (event) {
   }
 
   try {
+    // Krok 1: Získat seznam uživatelů
     const response = await axios.get("https://onesignal.com/api/v1/players", {
       headers: {
-        Authorization: `Basic ${ONESIGNAL_API_KEY}`,
+        Authorization: `Basic ${process.env.ONESIGNAL_API_KEY}`,
       },
       params: {
-        app_id: ONESIGNAL_APP_ID,
+        app_id: process.env.ONESIGNAL_APP_ID,
         limit: 300,
       },
     });
 
     const players = response.data.players || [];
-    const player = players.find((p) => p.tags && p.tags.email === email);
+
+    const player = players.find((p) => p.tags?.email === email);
 
     if (!player) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: "E-mail nebyl nalezen." }),
+        body: JSON.stringify({ message: "Uživatel nenalezen." }),
       };
     }
 
-    const sub = (player.subscriptions || []).find(
-      (s) => s.type === "email" && s.contact === email
-    );
-
-    if (!sub) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: "E-mailová subskripce nenalezena." }),
-      };
-    }
-
-    await axios.delete(
-      `https://onesignal.com/api/v1/apps/${ONESIGNAL_APP_ID}/subscriptions/${sub.id}`,
+    // Krok 2: Změnit tag
+    await axios.put(
+      `https://onesignal.com/api/v1/players/${player.id}`,
+      {
+        app_id: process.env.ONESIGNAL_APP_ID,
+        tags: { subscribed: false },
+      },
       {
         headers: {
-          Authorization: `Basic ${ONESIGNAL_API_KEY}`,
+          Authorization: `Basic ${process.env.ONESIGNAL_API_KEY}`,
+          "Content-Type": "application/json",
         },
       }
     );
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "E-mailový odběr byl úspěšně zrušen." }),
+      body: JSON.stringify({ message: "Uživatel odhlášen nastavením tagu." }),
     };
   } catch (error) {
     console.error("Chyba při odhlašování:", error.message);
