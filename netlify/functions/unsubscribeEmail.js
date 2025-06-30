@@ -1,6 +1,8 @@
 const ONESIGNAL_APP_ID = "732781c6-651b-4e12-aa7a-64cacc82c61d"; // veřejný
 const ONESIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY; // tajný
 
+console.log("ONESIGNAL_API_KEY:", process.env.ONESIGNAL_API_KEY);
+
 const axios = require("axios");
 
 exports.handler = async function (event) {
