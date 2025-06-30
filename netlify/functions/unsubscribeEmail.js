@@ -1,9 +1,7 @@
-const ONESIGNAL_APP_ID = "732781c6-651b-4e12-aa7a-64cacc82c61d"; // veřejný
-const ONESIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY; // tajný
-
-console.log("ONESIGNAL_API_KEY:", process.env.ONESIGNAL_API_KEY);
-
 const axios = require("axios");
+
+const APP_ID = "732781c6-651b-4e12-aa7a-64cacc82c61d"; // veřejné
+const API_KEY = process.env.ONESIGNAL_API_KEY; // tajné
 
 exports.handler = async function (event) {
   const { email } = JSON.parse(event.body || "{}");
@@ -16,50 +14,53 @@ exports.handler = async function (event) {
   }
 
   try {
-    // Získání všech zařízení
-    const response = await axios.get("https://onesignal.com/api/v1/players", {
+    console.info("📨 Hledám hráče podle e-mailu...");
+
+    const response = await axios.get(`https://onesignal.com/api/v1/players`, {
       headers: {
-        Authorization: `Basic ${ONESIGNAL_API_KEY}`,
+        Authorization: `Basic ${API_KEY}`,
       },
       params: {
-        app_id: ONESIGNAL_APP_ID,
+        app_id: APP_ID,
         limit: 300,
       },
     });
 
     const players = response.data.players || [];
 
-    // Hledání hráče podle e-mailu v tagu
-    const player = players.find((p) => p.tags?.email === email);
+    const player = players.find((p) => {
+      const tags = p.tags || {};
+      return tags.email === email;
+    });
 
     if (!player) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: "Uživatel nenalezen." }),
+        body: JSON.stringify({ message: "E-mail nebyl nalezen mezi odběrateli." }),
       };
     }
 
-    // Odlášení = přepis tagu subscribed na false
-    await axios.put(
+    console.info(`🗑 Mažu hráče ID: ${player.id}`);
+
+    await axios.delete(
       `https://onesignal.com/api/v1/players/${player.id}`,
       {
-        app_id: ONESIGNAL_APP_ID,
-        tags: { subscribed: false },
-      },
-      {
         headers: {
-          Authorization: `Basic ${ONESIGNAL_API_KEY}`,
+          Authorization: `Basic ${API_KEY}`,
           "Content-Type": "application/json",
+        },
+        data: {
+          app_id: APP_ID,
         },
       }
     );
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "E-mail byl odhlášen." }),
+      body: JSON.stringify({ message: "E-mail úspěšně odhlášen." }),
     };
   } catch (error) {
-    console.error("Chyba při odhlašování:", error.response?.data || error.message);
+    console.error("❌ Chyba při odhlašování:", error.response?.data || error.message);
     return {
       statusCode: 500,
       body: JSON.stringify({
