@@ -2,6 +2,7 @@ const axios = require("axios");
 
 const APP_ID = "732781c6-651b-4e12-aa7a-64cacc82c61d"; // veřejné
 const API_KEY = process.env.ONESIGNAL_API_KEY; // tajné
+console.log("API KEY je:", API_KEY); // jen pro debug, pak SMAZAT!
 
 exports.handler = async function (event) {
   const { email } = JSON.parse(event.body || "{}");
