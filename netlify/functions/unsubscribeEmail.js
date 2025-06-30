@@ -17,16 +17,16 @@ exports.handler = async function (event, context) {
       },
       params: {
         app_id: process.env.ONESIGNAL_APP_ID,
-        limit: 300, // Adjust if needed
+        limit: 300,
       },
     });
 
     const players = response.data.players || [];
 
+    // Oprava: tags je objekt, ne pole
     const player = players.find((p) => {
-      const tags = p.tags || [];
-      const tag = tags.find((t) => t.key === "email");
-      return tag && tag.value === email;
+      const tags = p.tags || {};
+      return tags.email === email;
     });
 
     if (!player) {
@@ -36,11 +36,20 @@ exports.handler = async function (event, context) {
       };
     }
 
-    await axios.delete(
-      `https://onesignal.com/api/v1/players/${player.id}?app_id=${process.env.ONESIGNAL_APP_ID}`,
+    // Zde ale POZOR: DELETE může být nevhodné, pokud OneSignal daný endpoint vůbec neumožňuje.
+    // Doporučuje se místo DELETE použít:
+    // PUT https://onesignal.com/api/v1/players/:id a změnit stav notifikací
+
+    await axios.put(
+      `https://onesignal.com/api/v1/players/${player.id}`,
+      {
+        app_id: process.env.ONESIGNAL_APP_ID,
+        notification_types: -2, // unsubscribe
+      },
       {
         headers: {
           Authorization: `Basic ${process.env.ONESIGNAL_API_KEY}`,
+          "Content-Type": "application/json",
         },
       }
     );
