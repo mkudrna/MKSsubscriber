@@ -1,3 +1,6 @@
+const ONESIGNAL_APP_ID = "732781c6-651b-4e12-aa7a-64cacc82c61d"; // veřejný
+const ONESIGNAL_API_KEY = process.env.ONESIGNAL_API_KEY; // tajný
+
 const axios = require("axios");
 
 exports.handler = async function (event) {
@@ -11,19 +14,20 @@ exports.handler = async function (event) {
   }
 
   try {
-    // Krok 1: Získat seznam uživatelů
+    // Získání všech zařízení
     const response = await axios.get("https://onesignal.com/api/v1/players", {
       headers: {
-        Authorization: `Basic ${process.env.ONESIGNAL_API_KEY}`,
+        Authorization: `Basic ${ONESIGNAL_API_KEY}`,
       },
       params: {
-        app_id: process.env.ONESIGNAL_APP_ID,
+        app_id: ONESIGNAL_APP_ID,
         limit: 300,
       },
     });
 
     const players = response.data.players || [];
 
+    // Hledání hráče podle e-mailu v tagu
     const player = players.find((p) => p.tags?.email === email);
 
     if (!player) {
@@ -33,16 +37,16 @@ exports.handler = async function (event) {
       };
     }
 
-    // Krok 2: Změnit tag
+    // Odlášení = přepis tagu subscribed na false
     await axios.put(
       `https://onesignal.com/api/v1/players/${player.id}`,
       {
-        app_id: process.env.ONESIGNAL_APP_ID,
+        app_id: ONESIGNAL_APP_ID,
         tags: { subscribed: false },
       },
       {
         headers: {
-          Authorization: `Basic ${process.env.ONESIGNAL_API_KEY}`,
+          Authorization: `Basic ${ONESIGNAL_API_KEY}`,
           "Content-Type": "application/json",
         },
       }
@@ -50,13 +54,16 @@ exports.handler = async function (event) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Uživatel odhlášen nastavením tagu." }),
+      body: JSON.stringify({ message: "E-mail byl odhlášen." }),
     };
   } catch (error) {
-    console.error("Chyba při odhlašování:", error.message);
+    console.error("Chyba při odhlašování:", error.response?.data || error.message);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Chyba serveru", detail: error.message }),
+      body: JSON.stringify({
+        message: "Chyba serveru",
+        detail: error.response?.data || error.message,
+      }),
     };
   }
 };
