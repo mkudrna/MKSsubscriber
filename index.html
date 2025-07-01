@@ -109,10 +109,9 @@
        <script>
            window.OneSignalDeferred = window.OneSignalDeferred || [];
            OneSignalDeferred.push(async function(OneSignal) {
-             // Získání nebo vytvoření a uložení externího ID
              let externalUserId = localStorage.getItem("onesignal_ext_id");
              if (!externalUserId) {
-               externalUserId = crypto.randomUUID(); // alternativně můžeš použít hash z e-mailu
+               externalUserId = crypto.randomUUID();
                localStorage.setItem("onesignal_ext_id", externalUserId);
              }
 
@@ -120,10 +119,11 @@
                appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
              });
 
-             // Zpětné přiřazení externalUserId i existujícím uživatelům
-             await OneSignal.setExternalUserId(externalUserId);
+             // POZOR: metoda setExternalUserId je nyní async metoda OneSignal.user.setExternalUserId
+             await OneSignal.user.setExternalUserId(externalUserId);
            });
        </script>
+
    </head>
 
    <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe">
