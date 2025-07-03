@@ -106,6 +106,48 @@
 
        <!-- OneSignal initialization push only -->
        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+       <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+       <script>
+           window.OneSignalDeferred = window.OneSignalDeferred || [];
+           OneSignalDeferred.push(async function(OneSignal) {
+             // Získání nebo generování externalUserId
+             let externalUserId = localStorage.getItem("onesignal_ext_id");
+             console.log("již přihlášený: ", externalUserId);
+
+             if (!externalUserId) {
+               // Pokud není externalUserId, vygenerujeme nové UUID
+               externalUserId = crypto.randomUUID();
+               localStorage.setItem("onesignal_ext_id", externalUserId);
+             }
+             console.log("vygenerováno: ", externalUserId);
+
+             // Inicializace OneSignalu
+             try {
+               await OneSignal.init({
+                 appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",  // Nahraďte správným appId
+               });
+               console.log("OneSignal inicializován.");
+             } catch (error) {
+               console.error("Chyba při inicializaci OneSignalu:", error);
+               return; // Pokud inicializace selže, nezapínáme login
+             }
+
+             // Soubory Service Workerů již spravuje SDK v16 interně, takže tuto část můžeme vynechat
+             console.log("Service Worker je spravován interně SDK v16.");
+
+             // Přihlášení uživatele s externalUserId
+             try {
+               await OneSignal.login(externalUserId);
+               console.log("OneSignal uživatel přihlášen.");
+             } catch (error) {
+               console.error("Chyba při přihlášení OneSignalu:", error);
+             }
+
+             console.log("finální externalUserId: ", externalUserId);
+           });
+       </script>
+
+       <!--
        <script>
            window.OneSignalDeferred = window.OneSignalDeferred || [];
            OneSignalDeferred.push(async function(OneSignal) {
@@ -114,6 +156,8 @@
              });
            });
        </script>
+       -->
+
    </head>
 
    <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe">
