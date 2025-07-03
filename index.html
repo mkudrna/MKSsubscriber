@@ -109,26 +109,23 @@
        <script>
            window.OneSignalDeferred = window.OneSignalDeferred || [];
            OneSignalDeferred.push(async function(OneSignal) {
+               // Získání nebo generování externalUserId
                let externalUserId = localStorage.getItem("onesignal_ext_id");
                console.log("již přihlášený: ", externalUserId);
 
-               // Pokud externalUserId není nastaveno, vygenerujeme nové
                if (!externalUserId) {
-                   externalUserId = crypto.randomUUID();
+                   externalUserId = crypto.randomUUID();  // Vygenerování nového UUID, pokud není k dispozici
                    localStorage.setItem("onesignal_ext_id", externalUserId);
                }
                console.log("vygenerováno: ", externalUserId);
 
-               // Inicializace OneSignal
-                window.OneSignalDeferred = window.OneSignalDeferred || [];
-                OneSignalDeferred.push(async function(OneSignal) {
-                await OneSignal.init({
-                    appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-                    });
-                });
-                console.log("OneSignal inicializován.");
+               // Inicializace OneSignalu
+               await OneSignal.init({
+                   appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",  // Nahraďte správným appId
+               });
+               console.log("OneSignal inicializován.");
 
-               // Propojení uživatele pomocí externalUserId
+               // Přihlášení uživatele s externalUserId
                OneSignal.login(externalUserId);
                console.log("OneSignal uživatel přihlášen.");
 
