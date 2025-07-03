@@ -131,14 +131,8 @@
                    return; // Pokud inicializace selže, nezapínáme login
                }
 
-               // Nastavení Service Workerů pro kompatibilitu
-               try {
-                   OneSignal.setServiceWorkerPath("https://mks-subscriber-test.netlify.app/OneSignalSDKWorker.js");
-                   OneSignal.setFallbackServiceWorkerPath("https://mks-subscriber-test.netlify.app/OneSignalSDK.sw.js");
-                   console.log("Service Worker cesty nastaveny.");
-               } catch (error) {
-                   console.error("Chyba při nastavení Service Workeru:", error);
-               }
+               // Soubory Service Workerů již spravuje SDK v16 interně, takže tuto část můžeme vynechat
+               console.log("Service Worker je spravován interně SDK v16.");
 
                // Přihlášení uživatele s externalUserId
                try {
@@ -151,6 +145,7 @@
                console.log("finální externalUserId: ", externalUserId);
            });
        </script>
+
 
 
    </head>
