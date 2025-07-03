@@ -110,22 +110,21 @@
            window.OneSignalDeferred = window.OneSignalDeferred || [];
            OneSignalDeferred.push(async function(OneSignal) {
              let externalUserId = localStorage.getItem("onesignal_ext_id");
+
              if (!externalUserId) {
-               externalUserId = crypto.randomUUID();
+               externalUserId = crypto.randomUUID();  // Vygenerujte UUID, pokud není externí ID
                localStorage.setItem("onesignal_ext_id", externalUserId);
              }
 
+             // Inicializujte OneSignal
              await OneSignal.init({
                appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
              });
 
-             // Získání uživatelského ID a připojení externalUserId
-             const userId = await OneSignal.getUserId();
-             if (userId) {
-               await OneSignal.setExternalUserId(externalUserId);
-             } else {
-               console.warn("OneSignal uživatel není dostupný. Možná uživatel odmítl notifikace?");
-             }
+             // Nastavte externalUserId pro daného uživatele
+             OneSignal.setExternalUserId(externalUserId);
+
+             console.log("externalUserId nastaveno:", externalUserId);
            });
        </script>
 
