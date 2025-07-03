@@ -114,24 +114,44 @@
                console.log("již přihlášený: ", externalUserId);
 
                if (!externalUserId) {
-                   externalUserId = crypto.randomUUID();  // Vygenerování nového UUID, pokud není k dispozici
+                   // Pokud není externalUserId, vygenerujeme nové UUID
+                   externalUserId = crypto.randomUUID();
                    localStorage.setItem("onesignal_ext_id", externalUserId);
                }
                console.log("vygenerováno: ", externalUserId);
 
                // Inicializace OneSignalu
-               await OneSignal.init({
-                   appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",  // Nahraďte správným appId
-               });
-               console.log("OneSignal inicializován.");
+               try {
+                   await OneSignal.init({
+                       appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",  // Nahraďte správným appId
+                   });
+                   console.log("OneSignal inicializován.");
+               } catch (error) {
+                   console.error("Chyba při inicializaci OneSignalu:", error);
+                   return; // Pokud inicializace selže, nezapínáme login
+               }
+
+               // Nastavení Service Workerů pro kompatibilitu
+               try {
+                   OneSignal.setServiceWorkerPath("https://mks-subscriber-test.netlify.app/OneSignalSDKWorker.js");
+                   OneSignal.setFallbackServiceWorkerPath("https://mks-subscriber-test.netlify.app/OneSignalSDK.sw.js");
+                   console.log("Service Worker cesty nastaveny.");
+               } catch (error) {
+                   console.error("Chyba při nastavení Service Workeru:", error);
+               }
 
                // Přihlášení uživatele s externalUserId
-               OneSignal.login(externalUserId);
-               console.log("OneSignal uživatel přihlášen.");
+               try {
+                   await OneSignal.login(externalUserId);
+                   console.log("OneSignal uživatel přihlášen.");
+               } catch (error) {
+                   console.error("Chyba při přihlášení OneSignalu:", error);
+               }
 
                console.log("finální externalUserId: ", externalUserId);
            });
        </script>
+
 
    </head>
 
