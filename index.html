@@ -119,7 +119,7 @@
                appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
              });
 
-             // POČKEJ, AŽ BUDE user dostupný
+             // přiregistrace externalUserId
              const user = await OneSignal.getUser();
              if (user) {
                await user.setExternalUserId(externalUserId);
