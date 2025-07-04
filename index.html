@@ -270,13 +270,14 @@
                                                                function subscribeEmail(event) {
                                                                    event.preventDefault();
                                                                    const email = document.getElementById("email-input").value;
-                                                                   console.log("E-mail:", email);
 
                                                                    try {
                                                                        if (email) {
                                                                           OneSignal.User.addEmail(email)
+                                                                          document.getElementById("status-message").textContent = "E-mail byl úspěšně zaregistrován!";
                                                                        } else {
-                                                                           console.error("Nepovedlo se přidat e-mail.");
+                                                                           console.error("Zadejte správný e-mail.");
+                                                                           document.getElementById("status-message").textContent = "Zadejte správný e-mail.";
                                                                        }
                                                                    } catch (error) {
                                                                        console.error("Došlo k chybě při zpracování e-mailu: ", error);
