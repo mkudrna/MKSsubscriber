@@ -358,21 +358,36 @@
                                                                 style="margin-top: 10px; font-size: 14px; color: white;">
                                                            </div>
                                                            <script>
-                                                                function setEmail() {
-                                                                    const email = document.getElementById("email-input").value;
-                                                                    if (!email) {
-                                                                        console.error("E-mail není platný");
-                                                                        return;
-                                                                    }
-                                                                    if(email !== null) {
-                                                                        OneSignal.push(function() {
-                                                                            OneSignal.setEmail(email).then(function(emailId) {
-                                                                            // Callback called when email have finished sending
-                                                                            console.log("emailId: ", emailId);
-                                                                            OneSignal.sendTag("user_name", "a_user_name");
-                                                                        });
-                                                                    });
+                                                               // Funkce pro přidání e-mailu
+                                                               function subscribeEmail(event) {
+                                                                   event.preventDefault();  // Zamezí odeslání formuláře
+                                                                   const email = document.getElementById("email-input").value;
+                                                                   console.log("E-mail:", email);
+
+                                                                   try {
+                                                                       if (email) {
+                                                                           // Ujistíme se, že je funkce `setEmail` dostupná
+                                                                           if (OneSignal && typeof OneSignal.setEmail === "function") {
+                                                                               OneSignal.setEmail(email)
+                                                                                   .then(() => {
+                                                                                       console.log("E-mail přidán: ", email);
+                                                                                   })
+                                                                                   .catch((error) => {
+                                                                                       console.error("Chyba při přidávání e-mailu: ", error);
+                                                                                   });
+                                                                           } else {
+                                                                               console.error("Metoda setEmail není dostupná.");
+                                                                           }
+                                                                       } else {
+                                                                           console.error("E-mail není platný");
+                                                                       }
+                                                                   } catch (error) {
+                                                                       console.error("Došlo k chybě při zpracování e-mailu: ", error);
+                                                                   }
                                                                }
+
+                                                               // Přidání posluchače události pro kliknutí na tlačítko
+                                                               document.getElementById("subscribeEmail").addEventListener("click", subscribeEmail);
                                                            </script>
                                                        </div>
                                                    </div>
