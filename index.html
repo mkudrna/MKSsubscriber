@@ -58,20 +58,20 @@
        <link rel="canonical" href="https://www.kulturavesvinech.cz/">
 
        <!-- OneSignal initialization -->
-       <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-       <script>
-           // Získání nebo generování externalUserId
-           let externalUserId = localStorage.getItem("onesignal_ext_id");
-           console.log("již přihlášený: ", externalUserId);
 
-           if (!externalUserId) {
-               // Pokud není externalUserId, vygenerujeme nové UUID
+       <script>
+           // externalUserId pro identifikaci uživatele v prostředí OneSignal
+           let externalUserId = localStorage.getItem("onesignal_ext_id");
+           if (externalUserId) {
+               console.log("MěKS app: user already exists, using loaded externalUserId: ", externalUserId);
+           } else {
                externalUserId = crypto.randomUUID();
                localStorage.setItem("onesignal_ext_id", externalUserId);
+               console.log("MěKS app: new externalUserId: ", externalUserId);
            }
-           console.log("vygenerováno: ", externalUserId);
        </script>
 
+       <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
        <script>
            window.OneSignalDeferred = window.OneSignalDeferred || [];
            OneSignalDeferred.push(async function(OneSignal) {
@@ -268,7 +268,7 @@
                                                            <script>
                                                                // Funkce pro přidání e-mailu
                                                                function subscribeEmail(event) {
-                                                                   event.preventDefault();  // Zamezí odeslání formuláře
+                                                                   event.preventDefault();
                                                                    const email = document.getElementById("email-input").value;
                                                                    console.log("E-mail:", email);
 
