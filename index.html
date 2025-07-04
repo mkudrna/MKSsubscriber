@@ -366,18 +366,13 @@
 
                                                                    try {
                                                                        if (email) {
-                                                                           // Ujistíme se, že je funkce `setEmail` dostupná
-                                                                           if (OneSignal && typeof OneSignal.setEmail === "function") {
-                                                                               OneSignal.setEmail(email)
-                                                                                   .then(() => {
-                                                                                       console.log("E-mail přidán: ", email);
-                                                                                   })
-                                                                                   .catch((error) => {
-                                                                                       console.error("Chyba při přidávání e-mailu: ", error);
-                                                                                   });
-                                                                           } else {
-                                                                               console.error("Metoda setEmail není dostupná.");
-                                                                           }
+                                                                          OneSignal.push(function() {
+                                                                          OneSignal.setEmail(email)
+                                                                            .then(function(emailId) {
+                                                                              // Callback called when email have finished sending
+                                                                              console.log("emailId: ", emailId);
+                                                                            });
+                                                                        });
                                                                        } else {
                                                                            console.error("E-mail není platný");
                                                                        }
