@@ -366,20 +366,9 @@
 
                                                                    try {
                                                                        if (email) {
-                                                                           try {
-                                                                               // Přidání e-mailu pomocí OneSignal SDK
-                                                                               OneSignal.User.addEmail(email)
-                                                                                   .then(() => {
-                                                                                       console.log("E-mail úspěšně přidán: ", email);
-                                                                                   })
-                                                                                   .catch((error) => {
-                                                                                       console.error("Chyba při přidávání e-mailu: ", error);
-                                                                                   });
-                                                                           } catch (error) {
-                                                                               console.error("Došlo k chybě při volání addEmail: ", error);
-                                                                           }
+                                                                          OneSignal.User.addEmail(email)
                                                                        } else {
-                                                                           console.error("E-mail není platný");
+                                                                           console.error("Nepovedlo se přidat e-mail.");
                                                                        }
                                                                    } catch (error) {
                                                                        console.error("Došlo k chybě při zpracování e-mailu: ", error);
