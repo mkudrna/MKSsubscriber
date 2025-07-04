@@ -60,15 +60,6 @@
        <!-- OneSignal initialization -->
        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
        <script>
-           window.OneSignalDeferred = window.OneSignalDeferred || [];
-           OneSignalDeferred.push(async function(OneSignal) {
-             await OneSignal.init({
-               appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
-             });
-           });
-       </script>
-
-       <script>
            // Získání nebo generování externalUserId
            let externalUserId = localStorage.getItem("onesignal_ext_id");
            console.log("již přihlášený: ", externalUserId);
@@ -79,6 +70,26 @@
                localStorage.setItem("onesignal_ext_id", externalUserId);
            }
            console.log("vygenerováno: ", externalUserId);
+       </script>
+
+       <script>
+           window.OneSignalDeferred = window.OneSignalDeferred || [];
+           OneSignalDeferred.push(async function(OneSignal) {
+             await OneSignal.init({
+               appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+             });
+           });
+       </script>
+
+       <script>
+           window.OneSignalDeferred = window.OneSignalDeferred || [];
+           OneSignalDeferred.push(async function(OneSignal) {
+             await OneSignal.login(externalUserId);
+                console.log("OneSignal uživatel přihlášen.");
+            } catch (error) {
+                console.error("Chyba při přihlášení OneSignalu:", error);
+            }
+        });
        </script>
    </head>
 
