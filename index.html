@@ -78,15 +78,8 @@
              await OneSignal.init({
                appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
              });
-           });
-       </script>
-
-       <script>
-           window.OneSignalDeferred = window.OneSignalDeferred || [];
-           OneSignalDeferred.push(async function(OneSignal) {
              await OneSignal.login(externalUserId);
-             console.log("OneSignal uživatel přihlášen.");
-        });
+           });
        </script>
    </head>
 
