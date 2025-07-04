@@ -366,13 +366,18 @@
 
                                                                    try {
                                                                        if (email) {
-                                                                           OneSignal.User.addEmail(email)
-                                                                               .then(() => {
-                                                                                   console.log("E-mail přidán: ", email);
-                                                                               })
-                                                                               .catch((error) => {
-                                                                                   console.error("Chyba při přidávání e-mailu: ", error);
-                                                                               });
+                                                                           // Ujistíme se, že je funkce `addEmail` dostupná
+                                                                           if (typeof OneSignal.User.addEmail === "function") {
+                                                                               OneSignal.User.addEmail(email)
+                                                                                   .then(() => {
+                                                                                       console.log("E-mail přidán: ", email);
+                                                                                   })
+                                                                                   .catch((error) => {
+                                                                                       console.error("Chyba při přidávání e-mailu: ", error);
+                                                                                   });
+                                                                           } else {
+                                                                               console.error("addEmail není funkce nebo není dostupná.");
+                                                                           }
                                                                        } else {
                                                                            console.error("E-mail není platný");
                                                                        }
