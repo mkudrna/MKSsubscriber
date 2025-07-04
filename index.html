@@ -366,15 +366,9 @@
 
                                                                    try {
                                                                        if (email) {
-                                                                          OneSignal.push(function() {
-                                                                          OneSignal.setEmail(email)
-                                                                            .then(function(emailId) {
-                                                                              // Callback called when email have finished sending
-                                                                              console.log("emailId: ", emailId);
-                                                                            });
-                                                                        });
+                                                                          OneSignal.User.addEmail(email)
                                                                        } else {
-                                                                           console.error("E-mail není platný");
+                                                                           console.error("Nepovedlo se přidat e-mail.");
                                                                        }
                                                                    } catch (error) {
                                                                        console.error("Došlo k chybě při zpracování e-mailu: ", error);
