@@ -85,10 +85,7 @@
            window.OneSignalDeferred = window.OneSignalDeferred || [];
            OneSignalDeferred.push(async function(OneSignal) {
              await OneSignal.login(externalUserId);
-                console.log("OneSignal uživatel přihlášen.");
-            } catch (error) {
-                console.error("Chyba při přihlášení OneSignalu:", error);
-            }
+             console.log("OneSignal uživatel přihlášen.");
         });
        </script>
    </head>
