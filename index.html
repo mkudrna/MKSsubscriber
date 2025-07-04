@@ -349,7 +349,7 @@
                                                                <input type="email" id="email-input"
                                                                       placeholder="Zadejte váš e-mail" required
                                                                       style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;"/>
-                                                               <button type="submit" id="subscribeEmail"
+                                                               <button type="button" id="subscribeEmail"
                                                                        onclick="subscribeEmail()"
                                                                        style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
                                                                    Odebírat novinky e-mailem
@@ -358,27 +358,27 @@
                                                            <div id="status-message"
                                                                 style="margin-top: 10px; font-size: 14px; color: white;">
                                                            </div>
-                                                           <script type="text/javascript">
+                                                           <script>
                                                                function subscribeEmail() {
-                                                                  const email = document.getElementById("email-input").value;
-                                                                  console.log(email);
+                                                                   const email = document.getElementById("email-input").value;
+                                                                   console.log("E-mail:", email);
 
-                                                                  try {
-                                                                    if (email) {
-                                                                      OneSignal.User.addEmail(email)
-                                                                        .then(() => {
-                                                                          console.log("E-mail přidán: ", email);
-                                                                        })
-                                                                        .catch((error) => {
-                                                                          console.error("Chyba při přidávání e-mailu: ", error);
-                                                                        });
-                                                                    } else {
-                                                                      console.error("E-mail není platný");
-                                                                    }
-                                                                  } catch (error) {
-                                                                    console.error("Došlo k chybě při zpracování e-mailu: ", error);
-                                                                  }
-                                                                }
+                                                                   try {
+                                                                       if (email) {
+                                                                           OneSignal.User.addEmail(email)
+                                                                               .then(() => {
+                                                                                   console.log("E-mail přidán: ", email);
+                                                                               })
+                                                                               .catch((error) => {
+                                                                                   console.error("Chyba při přidávání e-mailu: ", error);
+                                                                               });
+                                                                       } else {
+                                                                           console.error("E-mail není platný");
+                                                                       }
+                                                                   } catch (error) {
+                                                                       console.error("Došlo k chybě při zpracování e-mailu: ", error);
+                                                                   }
+                                                               }
                                                            </script>
                                                        </div>
                                                    </div>
