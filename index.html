@@ -366,9 +366,9 @@
 
                                                                    try {
                                                                        if (email) {
-                                                                           // Ujistíme se, že je funkce `addEmail` dostupná
-                                                                           if (typeof OneSignal.User.addEmail === "function") {
-                                                                               OneSignal.User.addEmail(email)
+                                                                           // Ujistíme se, že je funkce `setEmail` dostupná
+                                                                           if (OneSignal && typeof OneSignal.setEmail === "function") {
+                                                                               OneSignal.setEmail(email)
                                                                                    .then(() => {
                                                                                        console.log("E-mail přidán: ", email);
                                                                                    })
@@ -376,7 +376,7 @@
                                                                                        console.error("Chyba při přidávání e-mailu: ", error);
                                                                                    });
                                                                            } else {
-                                                                               console.error("addEmail není funkce nebo není dostupná.");
+                                                                               console.error("Metoda setEmail není dostupná.");
                                                                            }
                                                                        } else {
                                                                            console.error("E-mail není platný");
