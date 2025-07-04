@@ -350,7 +350,7 @@
                                                                       placeholder="Zadejte váš e-mail" required
                                                                       style="padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;"/>
                                                                <button type="button" id="subscribeEmail"
-                                                                       onclick="subscribeEmail()"
+                                                                       onclick="subscribeEmail(event)"
                                                                        style="background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
                                                                    Odebírat novinky e-mailem
                                                                </button>
@@ -359,7 +359,8 @@
                                                                 style="margin-top: 10px; font-size: 14px; color: white;">
                                                            </div>
                                                            <script>
-                                                               function subscribeEmail() {
+                                                               function subscribeEmail(event) {
+                                                                   event.preventDefault();  // Zamezí odeslání formuláře
                                                                    const email = document.getElementById("email-input").value;
                                                                    console.log("E-mail:", email);
 
