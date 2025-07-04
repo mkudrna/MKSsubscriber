@@ -266,10 +266,17 @@
                                                                 style="margin-top: 10px; font-size: 14px; color: red;">
                                                            </div>
                                                            <script>
-                                                               // Funkce pro přidání e-mailu
                                                                function subscribeEmail(event) {
                                                                    event.preventDefault();
+                                                                   const emailInput = document.getElementById("email-input");
                                                                    const email = document.getElementById("email-input").value;
+
+                                                                   // HTML5 validace e-mailu
+                                                                   if (!emailInput.checkValidity()) {
+                                                                        document.getElementById("status-message").textContent = "Zadaný e-mail není platný.";
+                                                                        document.getElementById("status-message").style.color = "red";
+                                                                        return; // Pokud e-mail není platný, ukončíme funkci
+                                                                   }
 
                                                                    try {
                                                                        if (email) {
