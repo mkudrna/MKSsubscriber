@@ -259,7 +259,7 @@
                                                                       style="width: 250px; padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;"/>
                                                                <span>
                                                                      <button type="button" id="subscribeEmail"
-                                                                             style="margin-top: 10px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
+                                                                             style="height: 50px; margin-top: 10px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
                                                                                Odebírat novinky e-mailem
                                                                      </button>
                                                                </span>
@@ -282,6 +282,22 @@
                                                                    }
 
                                                                    try {
+                                                                       const container = document.querySelector('.onesignal-customlink-container');
+                                                                       if (container) {
+                                                                            const button = container.querySelector('button');
+
+                                                                            if (button && button.textContent.includes("Odebírat novinky")) {
+                                                                                button.click();
+                                                                                console.log("Tlačítko 'Odebírat novinky' bylo automaticky skisknuto.");
+                                                                            } else if (button) {
+                                                                                console.log("Tlačítko neobsahuje text 'Odebírat novinky'.");
+                                                                            } else {
+                                                                                console.error("Tlačítko nebylo nalezeno.");
+                                                                            }
+                                                                       } else {
+                                                                            console.error("Div s třídou 'onesignal-customlink-container' nebyl nalezen.");
+                                                                       }
+
                                                                        if (email) {
                                                                           OneSignal.User.addEmail(email)
                                                                           document.getElementById("status-message").textContent = "E-mail byl úspěšně zaregistrován!";
