@@ -109,41 +109,38 @@
        <script>
            window.OneSignalDeferred = window.OneSignalDeferred || [];
            OneSignalDeferred.push(async function(OneSignal) {
-             // Získání nebo generování externalUserId
+             // externalId init
              let externalUserId = localStorage.getItem("onesignal_ext_id");
-             console.log("již přihlášený: ", externalUserId);
-
-             if (!externalUserId) {
-               // Pokud není externalUserId, vygenerujeme nové UUID
+             if (externalUserId) {
+                console.log("MěKS app: local externalUserId: ", externalUserId);
+             } else {
                externalUserId = crypto.randomUUID();
                localStorage.setItem("onesignal_ext_id", externalUserId);
+               console.log("MěKS app: new externalUserId: ", externalUserId);
              }
-             console.log("vygenerováno: ", externalUserId);
 
-             // Inicializace OneSignalu
+             // OneSignal init
              try {
                await OneSignal.init({
-                 appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",  // Nahraďte správným appId
+                 appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
                });
-               console.log("OneSignal inicializován.");
+               console.log("OneSignal: initialized");
              } catch (error) {
-               console.error("Chyba při inicializaci OneSignalu:", error);
-               return; // Pokud inicializace selže, nezapínáme login
+               console.error("OneSignal: initialization failed", error);
+               return; // pokud inicializace selže, nezapínáme login
              }
 
-             // Přihlášení uživatele s externalUserId
+             // přihlášení uživatele s externalUserId
              try {
                await OneSignal.login(externalUserId);
-               console.log("OneSignal uživatel přihlášen.");
+               console.log("OneSignal: user logged");
              } catch (error) {
-               console.error("Chyba při přihlášení OneSignalu:", error);
+               console.error("OneSignal: login failed", error);
              }
-
-             console.log("finální externalUserId: ", externalUserId);
            });
        </script>
 
-       <!--
+       <!-- default config
        <script>
            window.OneSignalDeferred = window.OneSignalDeferred || [];
            OneSignalDeferred.push(async function(OneSignal) {
@@ -358,24 +355,22 @@
                                                                 style="margin-top: 10px; font-size: 14px; color: white;">
                                                            </div>
                                                            <script>
-                                                               // Funkce pro přidání e-mailu
+                                                               // OneSignal add e-mail
                                                                function subscribeEmail(event) {
-                                                                   event.preventDefault();  // Zamezí odeslání formuláře
+                                                                   event.preventDefault();
                                                                    const email = document.getElementById("email-input").value;
-                                                                   console.log("E-mail:", email);
 
-                                                                   try {
-                                                                       if (email) {
-                                                                          OneSignal.User.addEmail(email)
-                                                                       } else {
-                                                                           console.error("Nepovedlo se přidat e-mail.");
+                                                                   if (email) {
+                                                                       try {
+                                                                            OneSignal.User.addEmail(email)
+                                                                       } catch (error) {
+                                                                            console.error("OneSignal: adding e-mail failed ", error);
                                                                        }
-                                                                   } catch (error) {
-                                                                       console.error("Došlo k chybě při zpracování e-mailu: ", error);
                                                                    }
-                                                               }
 
-                                                               // Přidání posluchače události pro kliknutí na tlačítko
+                                                                   console.log("OneSignal: e-mail successfully added", email);
+
+                                                               // event listener on button
                                                                document.getElementById("subscribeEmail").addEventListener("click", subscribeEmail);
                                                            </script>
                                                        </div>
