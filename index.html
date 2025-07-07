@@ -212,7 +212,7 @@
                                                    <div class="ez-c">
                                                        <div class="b b-text cf">
                                                            <div class="b-c b-text-c b-s b-s-t60 b-s-b60 b-cs cf">
-                                                               <h1 class="wnd-align-center"><strong>Městské kulturní středisko Trhové Sviny</strong></h1>
+                                                               <h1 class="wnd-align-center"><strong>Odběr novinek</strong></h1>
                                                            </div>
                                                        </div>
                                                        <div class="b b-s b-hr-line line-auto">
@@ -253,6 +253,12 @@
                                                        <!-- OneSignal e-mail form -->
                                                        <div align="center"
                                                             style="max-width: 900px; margin: 2em auto; font-family: Metropolis,Metropolis-Fallback,Apple Color Emoji,Noto Color Emoji,sans-serif; font-size: 16px; line-height: 1.6; border: 1px solid #ddd; padding: 1.5em; background: #fff; color: #666; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+
+                                                           <h2 style="font-size: 1.4em; margin-top: 0; color: #000">Odběr e-mailem</h2>
+                                                           <p align="center">
+                                                               Zapněte si odběr novinek e-mailem a získejte zajímavé bonusy!
+                                                           </p>
+
                                                            <form id="email-form">
                                                                <input type="email" id="email-input"
                                                                       placeholder="Zadejte váš e-mail" required
@@ -264,7 +270,7 @@
                                                                      </button>
                                                                </span>
                                                                <div id="status-message" align="left"
-                                                                    style="width: 500px; padding: 10px; font-size: 14px; color: #ccc;">
+                                                                    style="width: 500px; padding: 10px; font-size: 14px; color: #000;">
                                                                </div>
                                                            </form>
 
@@ -288,14 +294,14 @@
 
                                                                             if (button && button.textContent.includes("Odebírat novinky")) {
                                                                                 button.click();
-                                                                                console.log("Tlačítko 'Odebírat novinky' bylo automaticky skisknuto.");
+                                                                                console.log("OneSignal tlačítko bylo automaticky skisknuto.");
                                                                             } else if (button) {
-                                                                                console.log("Tlačítko neobsahuje text 'Odebírat novinky'.");
+                                                                                console.log("OneSignal tlačítko není ve stavu 'Odebírat novinky'.");
                                                                             } else {
-                                                                                console.error("Tlačítko nebylo nalezeno.");
+                                                                                console.error("OneSignal tlačítko nebylo nalezeno.");
                                                                             }
                                                                        } else {
-                                                                            console.error("Div s třídou 'onesignal-customlink-container' nebyl nalezen.");
+                                                                            console.error("'onesignal-customlink-container' nebyl nalezen.");
                                                                        }
 
                                                                        if (email) {
