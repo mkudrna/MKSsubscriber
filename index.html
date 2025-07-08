@@ -65,24 +65,14 @@
              await OneSignal.init({
                appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
              });
+                const isEnabled = await OneSignal.isPushNotificationsEnabled();
 
-             const user = await OneSignal.getUserId();;
-                if (user) {
-                    console.log("OneSignal user data: ", user);
-
-                    const externalUserId = user.externalUserId;
-                    const email = user.email;
-
-                    // Kontrola, zda existuje externalUserId a e-mail
-                    if (externalUserId && email) {
-                        console.log("Uživatel je přihlášen. externalUserId: ", externalUserId, ", e-mail: ", email);
-                    } else {
-                        console.log("Uživatel není plně zaregistrován. externalUserId: ", externalUserId, ", e-mail: ", email);
-                    }
-                } else {
-                    await OneSignal.login(externalUserId);
-                    console.log("OneSignal: přihlašuji s externalUserId: ", externalUserId);
+                if (isEnabled) {
+                    console.log("Push notifikace jsou povoleny.");
                 }
+
+                await OneSignal.login(externalUserId);
+                console.log("OneSignal: přihlašuji s externalUserId: ", externalUserId);
            });
        </script>
 
