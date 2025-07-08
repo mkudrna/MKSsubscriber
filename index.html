@@ -74,7 +74,7 @@
            if (externalUserId) {
                console.log("MěKS app: user already exists, using loaded externalUserId: ", externalUserId);
 
-               await OneSignal.login(externalUserId);
+               OneSignal.login(externalUserId);
                console.log("OneSignal: přihlašuji s externalUserId: ", externalUserId);
            } else {
                externalUserId = crypto.randomUUID();
