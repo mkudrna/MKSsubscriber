@@ -270,7 +270,7 @@
                                                                    if (!emailInput.checkValidity()) {
                                                                         document.getElementById("status-message").textContent = "Zadaný e-mail není platný.";
                                                                         document.getElementById("status-message").style.color = "red";
-                                                                        return; // Pokud e-mail není platný, ukončíme funkci
+                                                                        return;
                                                                    }
 
                                                                    try {
@@ -280,7 +280,7 @@
 
                                                                             if (button && button.textContent.includes("Odebírat novinky")) {
                                                                                 button.click();
-                                                                                console.log("OneSignal tlačítko bylo automaticky skisknuto.");
+                                                                                console.log("OneSignal tlačítko 'Odebírat novinky' bylo automaticky skisknuto.");
                                                                             } else if (button) {
                                                                                 console.log("OneSignal tlačítko není ve stavu 'Odebírat novinky'.");
                                                                             } else {
@@ -292,7 +292,11 @@
 
                                                                        if (email) {
                                                                           OneSignal.User.addEmail(email)
-                                                                          document.getElementById("status-message").textContent = "E-mail byl úspěšně zaregistrován!";
+
+                                                                          setTimeout(function() {
+                                                                              document.getElementById("status-message").textContent = "E-mail byl úspěšně zaregistrován!";
+                                                                          }, 1000);
+
                                                                        } else {
                                                                            console.error("Zadejte správný e-mail.");
                                                                            document.getElementById("status-message").textContent = "Zadejte správný e-mail.";
@@ -302,7 +306,7 @@
                                                                    }
                                                                }
 
-                                                               // Přidání posluchače události pro kliknutí na tlačítko
+                                                               // přidání posluchače události pro async kliknutí na tlačítko
                                                                document.getElementById("subscribeEmail").addEventListener("click", subscribeEmail);
                                                            </script>
                                                        </div>
