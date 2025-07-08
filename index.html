@@ -58,21 +58,6 @@
        <link rel="canonical" href="https://www.kulturavesvinech.cz/">
 
        <!-- OneSignal initialization -->
-
-       <script>
-           // externalUserId pro identifikaci uživatele v prostředí OneSignal
-           let externalUserId = localStorage.getItem("onesignal_ext_id");
-           if (externalUserId) {
-               console.log("MěKS app: user already exists, using loaded externalUserId: ", externalUserId);
-           } else {
-               externalUserId = crypto.randomUUID();
-               localStorage.setItem("onesignal_ext_id", externalUserId);
-               console.log("MěKS app: new externalUserId: ", externalUserId);
-               console.log("reloading");
-               location.reload(true);
-           }
-       </script>
-
        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
        <script>
            window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -80,9 +65,23 @@
              await OneSignal.init({
                appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
              });
-             await OneSignal.login(externalUserId);
-             console.log("OneSignal: přihlašuji s externalUserId: ", externalUserId);
            });
+       </script>
+
+       <script>
+           // externalUserId pro identifikaci uživatele v prostředí OneSignal
+           let externalUserId = localStorage.getItem("onesignal_ext_id");
+           if (externalUserId) {
+               console.log("MěKS app: user already exists, using loaded externalUserId: ", externalUserId);
+
+               await OneSignal.login(externalUserId);
+               console.log("OneSignal: přihlašuji s externalUserId: ", externalUserId);
+           } else {
+               externalUserId = crypto.randomUUID();
+               localStorage.setItem("onesignal_ext_id", externalUserId);
+               console.log("MěKS app: reloading with new externalUserId: ", externalUserId);
+               location.reload(true);
+           }
        </script>
    </head>
 
