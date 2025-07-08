@@ -65,6 +65,8 @@
              await OneSignal.init({
                appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
              });
+             await OneSignal.login(externalUserId);
+             console.log("OneSignal: přihlašuji s externalUserId: ", externalUserId);
            });
        </script>
 
@@ -73,13 +75,6 @@
            let externalUserId = localStorage.getItem("onesignal_ext_id");
            if (externalUserId) {
                console.log("MěKS app: user already exists, using loaded externalUserId: ", externalUserId);
-
-               window.OneSignalDeferred = window.OneSignalDeferred || [];
-               OneSignalDeferred.push(async function(OneSignal) {
-                   OneSignal.login(externalUserId);
-                   console.log("OneSignal: přihlašuji s externalUserId: ", externalUserId);
-               });
-
            } else {
                externalUserId = crypto.randomUUID();
                localStorage.setItem("onesignal_ext_id", externalUserId);
