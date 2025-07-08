@@ -65,12 +65,6 @@
              await OneSignal.init({
                appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
              });
-                const isEnabled = await OneSignal.isPushNotificationsEnabled();
-
-                if (isEnabled) {
-                    console.log("Push notifikace jsou povoleny.");
-                }
-
                 await OneSignal.login(externalUserId);
                 console.log("OneSignal: přihlašuji s externalUserId: ", externalUserId);
            });
@@ -228,8 +222,7 @@
 
                                                        <div style="max-width: 1140px; margin: 2em auto; font-family: Metropolis,Metropolis-Fallback,Apple Color Emoji,Noto Color Emoji,sans-serif; font-size: 16px; line-height: 1.6; border: 1px solid #ddd; padding: 1.5em; background: #fff; color: #666; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                                                            <div align="center">
-                                                               <h2 style="font-size: 1.4em; margin-top: 0; color: #000">Jak
-                                                                   fungují oznámení v prohlížeči?</h2>
+                                                               <h2 style="font-size: 1.4em; margin-top: 0; color: #000">① Odebírejte novinky v prohlížeči</h2>
                                                            </div>
                                                            <p align="center">
                                                                Oznámení (tzv. push notifikace) jsou krátké zprávy, které se
@@ -247,9 +240,9 @@
                                                        <div align="center"
                                                             style="max-width: 1140px; height: 260px; margin: 2em auto; font-family: Metropolis,Metropolis-Fallback,Apple Color Emoji,Noto Color Emoji,sans-serif; font-size: 16px; line-height: 1.6; border: 1px solid #ddd; padding: 1.5em; background: #fff; color: #666; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
 
-                                                           <h2 style="font-size: 1.4em; margin-top: 0; color: #000">Odebírat novinky i e-mailem</h2>
+                                                           <h2 style="font-size: 1.4em; margin-top: 0; color: #000">② Odebírat novinky i e-mailem</h2>
                                                            <p align="center">
-                                                               Zapněte si odběr novinek e-mailem a získejte zajímavé bonusy!
+                                                               Zapněte si zároveň odběr novinek e-mailem a získejte zajímavé bonusy!
                                                            </p>
 
                                                            <form id="email-form">
