@@ -232,13 +232,12 @@
 
                                                     <div style="max-width: 1140px; margin: 2em auto; font-family: Metropolis,Metropolis-Fallback,Apple Color Emoji,Noto Color Emoji,sans-serif; font-size: 16px; line-height: 1.6; border: 1px solid #ddd; padding: 1.5em; background: #fff; color: #666; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                                                         <div align="center">
-                                                            <h2 style="font-size: 1.4em; margin-top: 0; color: #000">① Odebírejte novinky v prohlížeči</h2>
+                                                            <h2 style="font-size: 1.4em; margin-top: 0; color: #000">① Odebírejte novinky e-mailem</h2>
                                                         </div>
                                                         <p align="center">
-                                                            Oznámení (tzv. push notifikace) jsou krátké zprávy, které se
-                                                            vám zobrazí přímo ve vašem zařízení, i když zrovna nemáte
-                                                            náš web otevřený.
+                                                            Aktivujte si odběr novinek e-mailem, ať vám žádná důležitá událost neuteče.
                                                         </p>
+                                                        <img src="qr_with_logo.png" />
 
                                                         <br/>
                                                         <div class="onesignal-customlink-container"
@@ -250,75 +249,13 @@
                                                     <div align="center"
                                                          style="max-width: 1140px; height: 260px; margin: 2em auto; font-family: Metropolis,Metropolis-Fallback,Apple Color Emoji,Noto Color Emoji,sans-serif; font-size: 16px; line-height: 1.6; border: 1px solid #ddd; padding: 1.5em; background: #fff; color: #666; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
 
-                                                        <h2 style="font-size: 1.4em; margin-top: 0; color: #000">② Odebírejte novinky e-mailem</h2>
+                                                        <h2 style="font-size: 1.4em; margin-top: 0; color: #000">② Odebírejte novinky v prohlížeči</h2>
                                                         <p align="center">
-                                                            Aktivujte si odběr novinek e-mailem, ať vám žádná důležitá událost neuteče.
+                                                            Oznámení (tzv. push notifikace) jsou krátké zprávy, které se
+                                                            vám zobrazí přímo ve vašem zařízení, i když zrovna nemáte
+                                                            náš web otevřený.
                                                         </p>
-
-                                                        <form id="email-form">
-                                                            <input type="email" id="email-input"
-                                                                   placeholder="Zadejte váš e-mail" required
-                                                                   style="width: 250px; padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;"/>
-                                                            <span>
-                                                                     <button type="button" id="subscribeEmail"
-                                                                             style="height: 55px; margin-top: 10px; background-color: #e54b4d; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">
-                                                                               Odebírat novinky e-mailem
-                                                                     </button>
-                                                               </span>
-                                                            <div id="status-message" align="left"
-                                                                 style="width: 500px; padding: 10px; font-size: 14px; color: #000;">
-                                                            </div>
-                                                        </form>
-
-                                                        <script>
-                                                            function subscribeEmail(event) {
-                                                                event.preventDefault();
-                                                                const emailInput = document.getElementById("email-input");
-                                                                const email = document.getElementById("email-input").value;
-
-                                                                // HTML5 validace e-mailu
-                                                                if (!emailInput.checkValidity()) {
-                                                                     document.getElementById("status-message").textContent = "Zadaný e-mail není platný.";
-                                                                     document.getElementById("status-message").style.color = "red";
-                                                                     return;
-                                                                }
-
-                                                                try {
-                                                                    const container = document.querySelector('.onesignal-customlink-container');
-                                                                    if (container) {
-                                                                         const button = container.querySelector('button');
-
-                                                                         if (button && button.textContent.includes("Odebírat novinky")) {
-                                                                             button.click();
-                                                                             console.log("OneSignal tlačítko 'Odebírat novinky' bylo automaticky skisknuto.");
-                                                                         } else if (button) {
-                                                                             console.log("OneSignal tlačítko není ve stavu 'Odebírat novinky'.");
-                                                                         } else {
-                                                                             console.error("OneSignal tlačítko nebylo nalezeno.");
-                                                                         }
-                                                                    } else {
-                                                                         console.error("'onesignal-customlink-container' nebyl nalezen.");
-                                                                    }
-
-                                                                    if (email) {
-                                                                       OneSignal.User.addEmail(email)
-
-                                                                       setTimeout(function() {
-                                                                           document.getElementById("status-message").textContent = "E-mail byl úspěšně zaregistrován!";
-                                                                       }, 1000);
-
-                                                                    } else {
-                                                                        console.error("Zadejte správný e-mail.");
-                                                                        document.getElementById("status-message").textContent = "Zadejte správný e-mail.";
-                                                                    }
-                                                                } catch (error) {
-                                                                    console.error("Došlo k chybě při zpracování e-mailu: ", error);
-                                                                }
-                                                            }
-
-                                                            // přidání posluchače události pro async kliknutí na tlačítko
-                                                            document.getElementById("subscribeEmail").addEventListener("click", subscribeEmail);
-                                                        </script>
+                                                        <p>viz obrázek</p>
                                                     </div>
 
                                                     <div align="center"
