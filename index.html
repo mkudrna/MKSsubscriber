@@ -57,7 +57,7 @@
        <meta name="robots" content="index,follow">
        <link rel="canonical" href="https://www.kulturavesvinech.cz/">
 
-       <!-- OneSignal initialization -->
+       <!-- OneSignal initialization
        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
        <script>
            window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -80,6 +80,31 @@
                localStorage.setItem("onesignal_ext_id", externalUserId);
                console.log("MěKS app: reloading with new externalUserId: ", externalUserId);
                location.reload(true);
+           }
+       </script>
+       -->
+
+       <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+       <script>
+           window.OneSignal = window.OneSignal || [];
+           OneSignal.push(function() {
+               OneSignal.init({
+                   appId: "732781c6-651b-4e12-aa7a-64cacc82c61d",
+               });
+           });
+
+           function setEmail() {
+               const email = prompt("Please enter your email", "example@domain.com");
+               if(email !== null) {
+                   OneSignal.push(function() {
+                   OneSignal.setEmail(email).then(function(emailId) {
+                       // Callback called when email have finished sending
+                           console.log("emailId: ", emailId);
+                           OneSignal.sendTag("user_name", email);
+                       });
+                   });
+
+               }
            }
        </script>
    </head>
