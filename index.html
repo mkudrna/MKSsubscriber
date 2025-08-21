@@ -140,7 +140,7 @@
                                                             <ul role="menubar" aria-label="Menu" class="level-1">
                                                                 <li>
                                                                     <a class="menu-item" role="menuitem"
-                                                                       href="https://www.kulturavesvinech.cz/home/"><span
+                                                                       href=https://www.kulturavesvinech.cz/home/><span
                                                                             class="menu-item-text">Úvod</span></a>
                                                                 </li>
                                                                 <li>
@@ -165,7 +165,7 @@
                                                                 </li>
                                                                 <li class="wnd-active   wnd-homepage">
                                                                     <a class="menu-item" role="menuitem"
-                                                                       href="https://mks-subscriber.netlify.app/"><span
+                                                                       href="https://mkssubscriber.netlify.app/"><span
                                                                             class="menu-item-text">Odběr novinek</span></a>
                                                                 </li>
                                                             </ul>
@@ -176,11 +176,7 @@
                                             </div>
                                             <div class="cart-and-mobile">
                                                 <div id="menu-mobile">
-                                                    <a href="#"
-                                                       id="menu-submit"
-                                                       role="button"
-                                                       aria-controls="menu"
-                                                       aria-expanded="false"><span></span>Menu</a>
+                                                    <a href="#" id="menu-submit"><span></span>Menu</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -323,75 +319,5 @@
         </footer>
     </div>
 </div>
-    <!-- MKS: mobilní menu – fallback + načtení webnodího JS -->
-<script>
-(function(){
-  var btn    = document.getElementById('menu-submit');
-  var slider = document.getElementById('menu-slider');
-  var block  = document.getElementById('menu-block');
-  if(!btn || !slider || !block) return;
-
-  // ať aria-controls ukazuje na skutečný kontejner, který otevíráme
-  btn.setAttribute('aria-controls','menu-slider');
-
-  var mq = window.matchMedia('(max-width:1024px)');
-  function isMobile(){ return mq.matches; }
-
-  function openMenu(){
-    [slider, block].forEach(function(el){
-      el.style.setProperty('display','block','important'); // přetluče webnodí CSS
-    });
-    document.body.classList.add('mks-menu-open');
-    btn.setAttribute('aria-expanded','true');
-  }
-
-  function closeMenu(){
-    [slider, block].forEach(function(el){
-      el.style.setProperty('display','none','important'); // přetluče webnodí CSS
-    });
-    document.body.classList.remove('mks-menu-open');
-    btn.setAttribute('aria-expanded','false');
-  }
-
-  function applyViewport(){
-    if(isMobile()){
-      closeMenu(); // na mobilu start zavřeno
-    }else{
-      // na desktopu necháme řídit původním CSS
-      [slider, block].forEach(function(el){ el.style.removeProperty('display'); });
-      document.body.classList.remove('mks-menu-open');
-      btn.setAttribute('aria-expanded','false');
-    }
-  }
-
-  applyViewport();
-  if(mq.addEventListener){ mq.addEventListener('change', applyViewport); }
-  else { window.addEventListener('resize', applyViewport); }
-
-  btn.addEventListener('click', function(e){
-    e.preventDefault();
-    if(!isMobile()) return; // na desktopu neklikej
-    var isClosed = getComputedStyle(slider).display === 'none';
-    if(isClosed) openMenu(); else closeMenu();
-  });
-
-  var closeLink = document.querySelector('#menu .menu-close');
-  if(closeLink){
-    closeLink.addEventListener('click', function(e){
-      e.preventDefault();
-      closeMenu();
-    });
-  }
-
-  // volitelné: zkus natáhnout webnodí jádro (když se chytí, nevadí – fallback už je hotový)
-  try{
-    var s=document.createElement('script');
-    s.src='https://duyn491kcolsw.cloudfront.net/client/js.modern/wn-website.min.js';
-    s.defer=true;
-    document.head.appendChild(s);
-  }catch(_){}
-})();
-</script>
-
 </body>
 </html>
