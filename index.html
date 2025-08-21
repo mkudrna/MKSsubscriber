@@ -321,5 +321,104 @@
         </footer>
     </div>
 </div>
+    <style>
+/* MKS: mobilní offcanvas menu – bez závislosti na Webnode JS */
+@media (max-width: 1024px) {
+  #menu-block{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80vw;
+    max-width: 360px;
+    height: 100vh;
+    background: inherit;          /* zachová vzhled sekce; když by splývalo, dej #111 */
+    transform: translateX(100%);
+    transition: transform .3s ease;
+    z-index: 9999;
+    overflow-y: auto;
+    box-shadow: -2px 0 12px rgba(0,0,0,.25);
+  }
+  #menu-block.mks-open{
+    transform: translateX(0);
+  }
+  /* zajistí, že „tři čárky“ zůstanou klikatelné nad obsahem */
+  #menu-mobile{ position: relative; z-index: 10000; }
+
+  /* X-ko v panelu */
+  #menu .menu-close{
+    display: block;
+    position: absolute;
+    top: .75rem;
+    right: .75rem;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  /* když je menu otevřené, zamkneme posuv stránky na pozadí */
+  body.mks-lock{ overflow: hidden; }
+}
+</style>
+
+    <script>
+(function(){
+  var btn   = document.getElementById('menu-submit');
+  var panel = document.getElementById('menu-block');
+  if(!btn || !panel) return;
+
+  function isMobile(){ return window.matchMedia('(max-width:1024px)').matches; }
+  function openMenu(){
+    panel.classList.add('mks-open');
+    btn.setAttribute('aria-expanded','true');
+    document.body.classList.add('mks-lock');
+  }
+  function closeMenu(){
+    panel.classList.remove('mks-open');
+    btn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('mks-lock');
+  }
+
+  // Výchozí stav na mobilu: zavřeno
+  if(isMobile()) closeMenu();
+
+  // Klik na „tři čárky“
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    if(!isMobile()) return; // na desktopu nic neměň
+    if(panel.classList.contains('mks-open')) closeMenu(); else openMenu();
+  });
+
+  // Klik na interní „X“
+  var closeLink = document.querySelector('#menu .menu-close');
+  if(closeLink){
+    closeLink.addEventListener('click', function(e){
+      e.preventDefault();
+      closeMenu();
+    });
+  }
+
+  // Klik mimo panel => zavřít (jen na mobilu)
+  document.addEventListener('click', function(e){
+    if(!isMobile()) return;
+    if(!panel.classList.contains('mks-open')) return;
+    var clickInside = panel.contains(e.target) || btn.contains(e.target);
+    if(!clickInside) closeMenu();
+  });
+
+  // Při změně velikosti okna vrátit panel do defaultu
+  window.addEventListener('resize', function(){
+    if(!isMobile()){
+      // desktop – nesahat do zobrazení, jen odstavit mobilní stav
+      panel.classList.remove('mks-open');
+      document.body.classList.remove('mks-lock');
+      btn.setAttribute('aria-expanded','false');
+      panel.style.removeProperty('transform');
+    }else{
+      // mobil – panel necháme zavřený
+      closeMenu();
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
