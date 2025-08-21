@@ -323,41 +323,61 @@
 </div>
     
 <style>
-/* MKS – vlastní mobilní menu; originální webnodí slider na mobilu vypínáme */
+/* === MKS: mobilní menu – finální vzhled & chování === */
 @media (max-width:1024px){
-  #menu-slider{ display:none !important; }  /* vypnout webnode verzi */
+  /* Vypnout webnodí mobilní slider, ať nám do toho nesahá */
+  #menu-slider{ display:none !important; }
 
-  /* náš panel */
+  /* Udržet hamburger nad panelem */
+  #menu-mobile a#menu-submit{ position:relative; z-index:10002; }
+
+  /* Backdrop přes celou stránku */
+  #mks-backdrop{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.55);
+    opacity:0; pointer-events:none;
+    transition:opacity .24s ease;
+    z-index:10000;
+  }
+  #mks-backdrop.open{ opacity:1; pointer-events:auto; }
+
+  /* Panel s menu */
   #mks-offcanvas{
-    position:fixed;
-    top:0; right:0; bottom:0;
-    width:min(84vw,380px);
-    background:#111;             /* uprav dle potřeby */
-    color:#fff;
+    position:fixed; top:0; right:0; bottom:0;
+    width:min(86vw, 380px);
+    background:#111; color:#fff;
     transform:translateX(100%);
     transition:transform .28s ease;
-    z-index:10000;
-    box-shadow:-3px 0 16px rgba(0,0,0,.35);
-    overflow-y:auto;
+    z-index:10001;           /* nad backdropem */
+    box-shadow:-6px 0 20px rgba(0,0,0,.35);
+    display:flex; flex-direction:column;
+    font: inherit;           /* vezmeme fonty webu */
   }
   #mks-offcanvas.open{ transform:translateX(0); }
 
+  /* Hlavička panelu */
   #mks-offcanvas header{
     position:sticky; top:0;
-    display:flex; justify-content:flex-end;
-    background:#111; padding:16px 20px;
+    display:flex; align-items:center; justify-content:flex-end;
+    padding:14px 18px;
+    background:#111;
   }
   #mks-offcanvas .mks-close{
-    width:44px; height:44px; border:0; background:transparent;
-    color:#fff; font-size:28px; line-height:1; cursor:pointer;
-  }
-  #mks-offcanvas nav ul{ list-style:none; margin:0; padding:8px 20px 24px; }
-  #mks-offcanvas nav li{ border-bottom:1px solid rgba(255,255,255,.1); }
-  #mks-offcanvas nav a{
-    display:block; padding:14px 2px; text-decoration:none; color:#fff !important;
+    appearance:none; border:0; background:transparent;
+    color:#fff; font-size:28px; line-height:1;
+    width:44px; height:44px; cursor:pointer;
   }
 
-  /* zamykání scrollu pozadí */
+  /* Seznam položek */
+  #mks-offcanvas nav{ padding:6px 16px 24px 16px; overflow:auto; }
+  #mks-offcanvas ul{ list-style:none; margin:0; padding:0; }
+  #mks-offcanvas li{ border-bottom:1px solid rgba(255,255,255,.12); }
+  #mks-offcanvas a{
+    display:block; text-decoration:none; color:#fff !important;
+    padding:14px 4px; font-weight:500; letter-spacing:.02em;
+  }
+
+  /* Zamknout scroll pozadí */
   body.mks-lock{ overflow:hidden; }
 }
 </style>
@@ -367,52 +387,52 @@
   var trigger = document.getElementById('menu-submit');
   if(!trigger) return;
 
-  var panel = null, mq = window.matchMedia('(max-width:1024px)');
+  var mq = window.matchMedia('(max-width:1024px)');
+  var panel, backdrop;
 
-  function buildPanel(){
-    if(panel) return panel;
-    panel = document.createElement('div');
-    panel.id = 'mks-offcanvas';
-    panel.setAttribute('role','dialog');
-    panel.innerHTML =
-      '<header><button class="mks-close" aria-label="Zavřít">×</button></header>' +
-      '<nav><ul class="mks-list"></ul></nav>';
-    document.body.appendChild(panel);
+  function ensureDOM(){
+    if(!backdrop){
+      backdrop = document.createElement('div');
+      backdrop.id = 'mks-backdrop';
+      backdrop.addEventListener('click', closeMenu);
+      document.body.appendChild(backdrop);
+    }
+    if(!panel){
+      panel = document.createElement('div');
+      panel.id = 'mks-offcanvas';
+      panel.innerHTML =
+        '<header><button class="mks-close" aria-label="Zavřít">×</button></header>' +
+        '<nav><ul class="mks-list"></ul></nav>';
+      document.body.appendChild(panel);
 
-    // zkopíruj položky z původního menu
-    var src = document.querySelector('#menu .level-1');
-    var dst = panel.querySelector('.mks-list');
-    if(src && dst){
-      src.querySelectorAll('li > a.menu-item').forEach(function(a){
-        var li = document.createElement('li');
-        li.appendChild(a.cloneNode(true));
-        dst.appendChild(li);
+      // přenést položky z originálního menu
+      var src = document.querySelector('#menu .level-1');
+      var dst = panel.querySelector('.mks-list');
+      if(src && dst){
+        src.querySelectorAll(':scope > li > a.menu-item').forEach(function(a){
+          var li = document.createElement('li');
+          li.appendChild(a.cloneNode(true));
+          dst.appendChild(li);
+        });
+      }
+      panel.querySelector('.mks-close').addEventListener('click', closeMenu);
+      panel.addEventListener('click', function(e){
+        if(e.target.closest('a')) closeMenu();
       });
     }
-
-    // zavírání
-    panel.querySelector('.mks-close').addEventListener('click', closeMenu);
-    panel.addEventListener('click', function(e){
-      if(e.target.closest('a')) closeMenu();      // klik na položku zavře
-    });
-    // klik mimo panel
-    document.addEventListener('click', function(e){
-      if(!panel.classList.contains('open')) return;
-      if(e.target.closest('#mks-offcanvas') || e.target.closest('#menu-submit')) return;
-      closeMenu();
-    });
-
-    return panel;
   }
 
   function openMenu(){
-    buildPanel();
+    ensureDOM();
     panel.classList.add('open');
+    backdrop.classList.add('open');
     trigger.setAttribute('aria-expanded','true');
     document.body.classList.add('mks-lock');
   }
+
   function closeMenu(){
-    if(panel){ panel.classList.remove('open'); }
+    if(panel) panel.classList.remove('open');
+    if(backdrop) backdrop.classList.remove('open');
     trigger.setAttribute('aria-expanded','false');
     document.body.classList.remove('mks-lock');
   }
@@ -429,6 +449,7 @@
   });
 })();
 </script>
+
 
 
 
