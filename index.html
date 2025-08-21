@@ -326,47 +326,64 @@
     <!-- MKS: mobilní menu – fallback + načtení webnodího JS -->
 <script>
 (function(){
-  var btn   = document.getElementById('menu-submit');
-  var block = document.getElementById('menu-block');
-  if(!btn || !block) return;
+  var btn    = document.getElementById('menu-submit');
+  var slider = document.getElementById('menu-slider');
+  var block  = document.getElementById('menu-block');
+  if(!btn || !slider || !block) return;
 
-  function isMobile(){ return window.matchMedia('(max-width:1024px)').matches; }
+  // ať aria-controls ukazuje na skutečný kontejner, který otevíráme
+  btn.setAttribute('aria-controls','menu-slider');
 
-  function apply(){
+  var mq = window.matchMedia('(max-width:1024px)');
+  function isMobile(){ return mq.matches; }
+
+  function openMenu(){
+    [slider, block].forEach(function(el){
+      el.style.setProperty('display','block','important'); // přetluče webnodí CSS
+    });
+    document.body.classList.add('mks-menu-open');
+    btn.setAttribute('aria-expanded','true');
+  }
+
+  function closeMenu(){
+    [slider, block].forEach(function(el){
+      el.style.setProperty('display','none','important'); // přetluče webnodí CSS
+    });
+    document.body.classList.remove('mks-menu-open');
+    btn.setAttribute('aria-expanded','false');
+  }
+
+  function applyViewport(){
     if(isMobile()){
-      // na mobilu start zavřeno
-      block.classList.remove('mks-open');
-      block.style.display = 'none';
-      btn.setAttribute('aria-expanded','false');
+      closeMenu(); // na mobilu start zavřeno
     }else{
-      // na desktopu necháme původní chování
-      block.style.removeProperty('display');
+      // na desktopu necháme řídit původním CSS
+      [slider, block].forEach(function(el){ el.style.removeProperty('display'); });
+      document.body.classList.remove('mks-menu-open');
       btn.setAttribute('aria-expanded','false');
     }
   }
-  apply();
-  window.addEventListener('resize', apply);
+
+  applyViewport();
+  if(mq.addEventListener){ mq.addEventListener('change', applyViewport); }
+  else { window.addEventListener('resize', applyViewport); }
 
   btn.addEventListener('click', function(e){
     e.preventDefault();
-    if(!isMobile()) return;
-    var open = !block.classList.contains('mks-open');
-    block.classList.toggle('mks-open', open);
-    block.style.display = open ? 'block' : 'none';
-    btn.setAttribute('aria-expanded', String(open));
+    if(!isMobile()) return; // na desktopu neklikej
+    var isClosed = getComputedStyle(slider).display === 'none';
+    if(isClosed) openMenu(); else closeMenu();
   });
 
   var closeLink = document.querySelector('#menu .menu-close');
   if(closeLink){
     closeLink.addEventListener('click', function(e){
       e.preventDefault();
-      block.classList.remove('mks-open');
-      block.style.display = 'none';
-      btn.setAttribute('aria-expanded','false');
+      closeMenu();
     });
   }
 
-  // Pokus natáhnout webnodí jádro – pokud existuje, obslouží si to samo
+  // volitelné: zkus natáhnout webnodí jádro (když se chytí, nevadí – fallback už je hotový)
   try{
     var s=document.createElement('script');
     s.src='https://duyn491kcolsw.cloudfront.net/client/js.modern/wn-website.min.js';
@@ -375,5 +392,6 @@
   }catch(_){}
 })();
 </script>
+
 </body>
 </html>
