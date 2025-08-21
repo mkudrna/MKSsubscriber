@@ -321,51 +321,61 @@
         </footer>
     </div>
 </div>
-    <style>
-/* MKS: mobilní offcanvas menu – bez závislosti na Webnode JS */
+<style>
+/* MKS – mobilní offcanvas menu (nezávislé na webnodím JS) */
 @media (max-width: 1024px) {
+  /* panel */
   #menu-block{
     position: fixed;
-    top: 0;
-    right: 0;
-    width: 80vw;
-    max-width: 360px;
-    height: 100vh;
-    background: inherit;          /* zachová vzhled sekce; když by splývalo, dej #111 */
+    top: 0; right: 0; bottom: 0;
+    width: 84vw; max-width: 380px;
+    background: #111;              /* aby byl text vidět – klidně změň */
+    color: #fff;
     transform: translateX(100%);
-    transition: transform .3s ease;
+    transition: transform .28s ease;
     z-index: 9999;
+    box-shadow: -3px 0 16px rgba(0,0,0,.35);
     overflow-y: auto;
-    box-shadow: -2px 0 12px rgba(0,0,0,.25);
   }
-  #menu-block.mks-open{
-    transform: translateX(0);
-  }
-  /* zajistí, že „tři čárky“ zůstanou klikatelné nad obsahem */
-  #menu-mobile{ position: relative; z-index: 10000; }
+  #menu-block.mks-open{ transform: translateX(0); }
 
-  /* X-ko v panelu */
+  /* Webnode mobilně skrývá obsah – při .mks-open ho vynutíme */
+  #menu-block .menu-wrapper{ display: none; }
+  #menu-block.mks-open .menu-wrapper{ display: block; padding: 72px 24px 24px; }
+
+  #menu-block .level-1{ display: none; list-style: none; margin: 0; padding: 0; }
+  #menu-block.mks-open .level-1{ display: block; }
+
+  #menu-block .level-1 > li{ display: block; border-bottom: 1px solid rgba(255,255,255,.1); }
+  #menu-block .menu-item{ display: block; padding: 14px 2px; text-decoration: none; color: inherit; }
+  #menu-block .menu-item .menu-item-text{ color: inherit; }
+
+  #menu-block .more-text{ display: none !important; }
+
+  /* křížek */
   #menu .menu-close{
     display: block;
-    position: absolute;
-    top: .75rem;
-    right: .75rem;
-    width: 2rem;
-    height: 2rem;
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px;
   }
 
-  /* když je menu otevřené, zamkneme posuv stránky na pozadí */
+  /* hamburger musí být nad obsahem */
+  #menu-mobile{ position: relative; z-index: 10000; }
+
+  /* zamkneme scroll pozadí při otevření */
   body.mks-lock{ overflow: hidden; }
 }
 </style>
 
-    <script>
+<script>
 (function(){
   var btn   = document.getElementById('menu-submit');
   var panel = document.getElementById('menu-block');
   if(!btn || !panel) return;
 
-  function isMobile(){ return window.matchMedia('(max-width:1024px)').matches; }
+  var mq = window.matchMedia('(max-width:1024px)');
+  function isMobile(){ return mq.matches; }
+
   function openMenu(){
     panel.classList.add('mks-open');
     btn.setAttribute('aria-expanded','true');
@@ -377,45 +387,36 @@
     document.body.classList.remove('mks-lock');
   }
 
-  // Výchozí stav na mobilu: zavřeno
+  // výchozí stav na mobilu: zavřeno
   if(isMobile()) closeMenu();
 
-  // Klik na „tři čárky“
+  // toggle
   btn.addEventListener('click', function(e){
     e.preventDefault();
-    if(!isMobile()) return; // na desktopu nic neměň
-    if(panel.classList.contains('mks-open')) closeMenu(); else openMenu();
+    if(!isMobile()) return;
+    panel.classList.contains('mks-open') ? closeMenu() : openMenu();
   });
 
-  // Klik na interní „X“
+  // zavřít přes X
   var closeLink = document.querySelector('#menu .menu-close');
   if(closeLink){
     closeLink.addEventListener('click', function(e){
-      e.preventDefault();
-      closeMenu();
+      e.preventDefault(); closeMenu();
     });
   }
 
-  // Klik mimo panel => zavřít (jen na mobilu)
+  // klik mimo panel zavře
   document.addEventListener('click', function(e){
     if(!isMobile()) return;
     if(!panel.classList.contains('mks-open')) return;
-    var clickInside = panel.contains(e.target) || btn.contains(e.target);
-    if(!clickInside) closeMenu();
+    var inside = panel.contains(e.target) || btn.contains(e.target);
+    if(!inside) closeMenu();
   });
 
-  // Při změně velikosti okna vrátit panel do defaultu
-  window.addEventListener('resize', function(){
-    if(!isMobile()){
-      // desktop – nesahat do zobrazení, jen odstavit mobilní stav
-      panel.classList.remove('mks-open');
-      document.body.classList.remove('mks-lock');
-      btn.setAttribute('aria-expanded','false');
-      panel.style.removeProperty('transform');
-    }else{
-      // mobil – panel necháme zavřený
-      closeMenu();
-    }
+  // reakce na změnu šířky
+  mq.addEventListener('change', function(){
+    if(isMobile()) closeMenu();
+    else { panel.classList.remove('mks-open'); document.body.classList.remove('mks-lock'); btn.setAttribute('aria-expanded','false'); }
   });
 })();
 </script>
