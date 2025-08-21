@@ -176,7 +176,11 @@
                                             </div>
                                             <div class="cart-and-mobile">
                                                 <div id="menu-mobile">
-                                                    <a href="#" id="menu-submit"><span></span>Menu</a>
+                                                    <a href="#"
+                                                       id="menu-submit"
+                                                       role="button"
+                                                       aria-controls="menu"
+                                                       aria-expanded="false"><span></span>Menu</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -319,5 +323,57 @@
         </footer>
     </div>
 </div>
+    <!-- MKS: mobilní menu – fallback + načtení webnodího JS -->
+<script>
+(function(){
+  var btn   = document.getElementById('menu-submit');
+  var block = document.getElementById('menu-block');
+  if(!btn || !block) return;
+
+  function isMobile(){ return window.matchMedia('(max-width:1024px)').matches; }
+
+  function apply(){
+    if(isMobile()){
+      // na mobilu start zavřeno
+      block.classList.remove('mks-open');
+      block.style.display = 'none';
+      btn.setAttribute('aria-expanded','false');
+    }else{
+      // na desktopu necháme původní chování
+      block.style.removeProperty('display');
+      btn.setAttribute('aria-expanded','false');
+    }
+  }
+  apply();
+  window.addEventListener('resize', apply);
+
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    if(!isMobile()) return;
+    var open = !block.classList.contains('mks-open');
+    block.classList.toggle('mks-open', open);
+    block.style.display = open ? 'block' : 'none';
+    btn.setAttribute('aria-expanded', String(open));
+  });
+
+  var closeLink = document.querySelector('#menu .menu-close');
+  if(closeLink){
+    closeLink.addEventListener('click', function(e){
+      e.preventDefault();
+      block.classList.remove('mks-open');
+      block.style.display = 'none';
+      btn.setAttribute('aria-expanded','false');
+    });
+  }
+
+  // Pokus natáhnout webnodí jádro – pokud existuje, obslouží si to samo
+  try{
+    var s=document.createElement('script');
+    s.src='https://duyn491kcolsw.cloudfront.net/client/js.modern/wn-website.min.js';
+    s.defer=true;
+    document.head.appendChild(s);
+  }catch(_){}
+})();
+</script>
 </body>
 </html>
