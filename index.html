@@ -322,14 +322,18 @@
     </div>
 </div>
 <style>
-/* MKS – mobilní offcanvas menu (nezávislé na webnodím JS) */
+/* MKS – mobilní off-canvas menu bez závislosti na Webnode JS */
 @media (max-width: 1024px) {
-  /* panel */
+  /* Webnode na mobilu skrývá tento wrapper – musíme ho zpřístupnit */
+  #menu-slider{ display:block !important; visibility:visible !important; }
+  #menu{ display:block !important; }
+
+  /* Panel s nabídkou */
   #menu-block{
     position: fixed;
     top: 0; right: 0; bottom: 0;
     width: 84vw; max-width: 380px;
-    background: #111;              /* aby byl text vidět – klidně změň */
+    background: #111;              /* můžeš upravit */
     color: #fff;
     transform: translateX(100%);
     transition: transform .28s ease;
@@ -339,31 +343,32 @@
   }
   #menu-block.mks-open{ transform: translateX(0); }
 
-  /* Webnode mobilně skrývá obsah – při .mks-open ho vynutíme */
-  #menu-block .menu-wrapper{ display: none; }
-  #menu-block.mks-open .menu-wrapper{ display: block; padding: 72px 24px 24px; }
+  /* Webnode mobilně skrývá obsah – při otevření ho vynutíme */
+  #menu-block .menu-wrapper{ display:none; }
+  #menu-block.mks-open .menu-wrapper{ display:block; padding:72px 24px 24px; }
 
-  #menu-block .level-1{ display: none; list-style: none; margin: 0; padding: 0; }
-  #menu-block.mks-open .level-1{ display: block; }
+  #menu-block .level-1{ display:none; list-style:none; margin:0; padding:0; }
+  #menu-block.mks-open .level-1{ display:block; }
 
-  #menu-block .level-1 > li{ display: block; border-bottom: 1px solid rgba(255,255,255,.1); }
-  #menu-block .menu-item{ display: block; padding: 14px 2px; text-decoration: none; color: inherit; }
-  #menu-block .menu-item .menu-item-text{ color: inherit; }
+  #menu-block .level-1 > li{ display:block; border-bottom:1px solid rgba(255,255,255,.1); }
+  #menu-block .menu-item{ display:block; padding:14px 2px; text-decoration:none; color:inherit !important; }
+  #menu-block .menu-item .menu-item-text{ color:inherit !important; }
 
-  #menu-block .more-text{ display: none !important; }
+  /* Skrýt „Více“ a podobné desktopové prvky */
+  #menu-block .more-text{ display:none !important; }
 
-  /* křížek */
+  /* Křížek vpravo nahoře */
   #menu .menu-close{
-    display: block;
-    position: absolute; top: 16px; right: 16px;
-    width: 32px; height: 32px;
+    display:block;
+    position:absolute; top:16px; right:16px;
+    width:32px; height:32px;
   }
 
-  /* hamburger musí být nad obsahem */
-  #menu-mobile{ position: relative; z-index: 10000; }
+  /* Hamburger nad obsahem */
+  #menu-mobile{ position:relative; z-index:10000; }
 
-  /* zamkneme scroll pozadí při otevření */
-  body.mks-lock{ overflow: hidden; }
+  /* Zamykání scrollu pozadí při otevření */
+  body.mks-lock{ overflow:hidden; }
 }
 </style>
 
@@ -387,39 +392,39 @@
     document.body.classList.remove('mks-lock');
   }
 
-  // výchozí stav na mobilu: zavřeno
   if(isMobile()) closeMenu();
 
-  // toggle
   btn.addEventListener('click', function(e){
     e.preventDefault();
     if(!isMobile()) return;
     panel.classList.contains('mks-open') ? closeMenu() : openMenu();
   });
 
-  // zavřít přes X
   var closeLink = document.querySelector('#menu .menu-close');
   if(closeLink){
-    closeLink.addEventListener('click', function(e){
-      e.preventDefault(); closeMenu();
-    });
+    closeLink.addEventListener('click', function(e){ e.preventDefault(); closeMenu(); });
   }
 
-  // klik mimo panel zavře
+  /* Klik mimo panel zavře */
   document.addEventListener('click', function(e){
-    if(!isMobile()) return;
-    if(!panel.classList.contains('mks-open')) return;
+    if(!isMobile() || !panel.classList.contains('mks-open')) return;
     var inside = panel.contains(e.target) || btn.contains(e.target);
     if(!inside) closeMenu();
   });
 
-  // reakce na změnu šířky
+  /* Klik na libovolnou položku menu zavře */
+  panel.addEventListener('click', function(e){
+    var a = e.target.closest('.menu-item');
+    if(a && isMobile()) closeMenu();
+  });
+
   mq.addEventListener('change', function(){
     if(isMobile()) closeMenu();
     else { panel.classList.remove('mks-open'); document.body.classList.remove('mks-lock'); btn.setAttribute('aria-expanded','false'); }
   });
 })();
 </script>
+
 
 </body>
 </html>
