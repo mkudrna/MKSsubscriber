@@ -321,109 +321,115 @@
         </footer>
     </div>
 </div>
+    
 <style>
-/* MKS – mobilní off-canvas menu bez závislosti na Webnode JS */
-@media (max-width: 1024px) {
-  /* Webnode na mobilu skrývá tento wrapper – musíme ho zpřístupnit */
-  #menu-slider{ display:block !important; visibility:visible !important; }
-  #menu{ display:block !important; }
+/* MKS – vlastní mobilní menu; originální webnodí slider na mobilu vypínáme */
+@media (max-width:1024px){
+  #menu-slider{ display:none !important; }  /* vypnout webnode verzi */
 
-  /* Panel s nabídkou */
-  #menu-block{
-    position: fixed;
-    top: 0; right: 0; bottom: 0;
-    width: 84vw; max-width: 380px;
-    background: #111;              /* můžeš upravit */
-    color: #fff;
-    transform: translateX(100%);
-    transition: transform .28s ease;
-    z-index: 9999;
-    box-shadow: -3px 0 16px rgba(0,0,0,.35);
-    overflow-y: auto;
+  /* náš panel */
+  #mks-offcanvas{
+    position:fixed;
+    top:0; right:0; bottom:0;
+    width:min(84vw,380px);
+    background:#111;             /* uprav dle potřeby */
+    color:#fff;
+    transform:translateX(100%);
+    transition:transform .28s ease;
+    z-index:10000;
+    box-shadow:-3px 0 16px rgba(0,0,0,.35);
+    overflow-y:auto;
   }
-  #menu-block.mks-open{ transform: translateX(0); }
+  #mks-offcanvas.open{ transform:translateX(0); }
 
-  /* Webnode mobilně skrývá obsah – při otevření ho vynutíme */
-  #menu-block .menu-wrapper{ display:none; }
-  #menu-block.mks-open .menu-wrapper{ display:block; padding:72px 24px 24px; }
-
-  #menu-block .level-1{ display:none; list-style:none; margin:0; padding:0; }
-  #menu-block.mks-open .level-1{ display:block; }
-
-  #menu-block .level-1 > li{ display:block; border-bottom:1px solid rgba(255,255,255,.1); }
-  #menu-block .menu-item{ display:block; padding:14px 2px; text-decoration:none; color:inherit !important; }
-  #menu-block .menu-item .menu-item-text{ color:inherit !important; }
-
-  /* Skrýt „Více“ a podobné desktopové prvky */
-  #menu-block .more-text{ display:none !important; }
-
-  /* Křížek vpravo nahoře */
-  #menu .menu-close{
-    display:block;
-    position:absolute; top:16px; right:16px;
-    width:32px; height:32px;
+  #mks-offcanvas header{
+    position:sticky; top:0;
+    display:flex; justify-content:flex-end;
+    background:#111; padding:16px 20px;
+  }
+  #mks-offcanvas .mks-close{
+    width:44px; height:44px; border:0; background:transparent;
+    color:#fff; font-size:28px; line-height:1; cursor:pointer;
+  }
+  #mks-offcanvas nav ul{ list-style:none; margin:0; padding:8px 20px 24px; }
+  #mks-offcanvas nav li{ border-bottom:1px solid rgba(255,255,255,.1); }
+  #mks-offcanvas nav a{
+    display:block; padding:14px 2px; text-decoration:none; color:#fff !important;
   }
 
-  /* Hamburger nad obsahem */
-  #menu-mobile{ position:relative; z-index:10000; }
-
-  /* Zamykání scrollu pozadí při otevření */
+  /* zamykání scrollu pozadí */
   body.mks-lock{ overflow:hidden; }
 }
 </style>
 
 <script>
 (function(){
-  var btn   = document.getElementById('menu-submit');
-  var panel = document.getElementById('menu-block');
-  if(!btn || !panel) return;
+  var trigger = document.getElementById('menu-submit');
+  if(!trigger) return;
 
-  var mq = window.matchMedia('(max-width:1024px)');
-  function isMobile(){ return mq.matches; }
+  var panel = null, mq = window.matchMedia('(max-width:1024px)');
+
+  function buildPanel(){
+    if(panel) return panel;
+    panel = document.createElement('div');
+    panel.id = 'mks-offcanvas';
+    panel.setAttribute('role','dialog');
+    panel.innerHTML =
+      '<header><button class="mks-close" aria-label="Zavřít">×</button></header>' +
+      '<nav><ul class="mks-list"></ul></nav>';
+    document.body.appendChild(panel);
+
+    // zkopíruj položky z původního menu
+    var src = document.querySelector('#menu .level-1');
+    var dst = panel.querySelector('.mks-list');
+    if(src && dst){
+      src.querySelectorAll('li > a.menu-item').forEach(function(a){
+        var li = document.createElement('li');
+        li.appendChild(a.cloneNode(true));
+        dst.appendChild(li);
+      });
+    }
+
+    // zavírání
+    panel.querySelector('.mks-close').addEventListener('click', closeMenu);
+    panel.addEventListener('click', function(e){
+      if(e.target.closest('a')) closeMenu();      // klik na položku zavře
+    });
+    // klik mimo panel
+    document.addEventListener('click', function(e){
+      if(!panel.classList.contains('open')) return;
+      if(e.target.closest('#mks-offcanvas') || e.target.closest('#menu-submit')) return;
+      closeMenu();
+    });
+
+    return panel;
+  }
 
   function openMenu(){
-    panel.classList.add('mks-open');
-    btn.setAttribute('aria-expanded','true');
+    buildPanel();
+    panel.classList.add('open');
+    trigger.setAttribute('aria-expanded','true');
     document.body.classList.add('mks-lock');
   }
   function closeMenu(){
-    panel.classList.remove('mks-open');
-    btn.setAttribute('aria-expanded','false');
+    if(panel){ panel.classList.remove('open'); }
+    trigger.setAttribute('aria-expanded','false');
     document.body.classList.remove('mks-lock');
   }
 
-  if(isMobile()) closeMenu();
-
-  btn.addEventListener('click', function(e){
-    e.preventDefault();
-    if(!isMobile()) return;
-    panel.classList.contains('mks-open') ? closeMenu() : openMenu();
-  });
-
-  var closeLink = document.querySelector('#menu .menu-close');
-  if(closeLink){
-    closeLink.addEventListener('click', function(e){ e.preventDefault(); closeMenu(); });
-  }
-
-  /* Klik mimo panel zavře */
-  document.addEventListener('click', function(e){
-    if(!isMobile() || !panel.classList.contains('mks-open')) return;
-    var inside = panel.contains(e.target) || btn.contains(e.target);
-    if(!inside) closeMenu();
-  });
-
-  /* Klik na libovolnou položku menu zavře */
-  panel.addEventListener('click', function(e){
-    var a = e.target.closest('.menu-item');
-    if(a && isMobile()) closeMenu();
+  trigger.addEventListener('click', function(e){
+    if(mq.matches){
+      e.preventDefault();
+      (panel && panel.classList.contains('open')) ? closeMenu() : openMenu();
+    }
   });
 
   mq.addEventListener('change', function(){
-    if(isMobile()) closeMenu();
-    else { panel.classList.remove('mks-open'); document.body.classList.remove('mks-lock'); btn.setAttribute('aria-expanded','false'); }
+    if(!mq.matches) closeMenu();
   });
 })();
 </script>
+
 
 
 </body>
