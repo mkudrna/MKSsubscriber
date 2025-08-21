@@ -36,25 +36,6 @@
     </script>
     <link rel="preload stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/2m/2m8/2m8msc.css?ph=8239781201"
           as="style">
-    <style id="mks-mobile-menu">
-  @media (min-width: 1025px){
-    #menu-mobile { display: none; }
-    #menu-slider { display: block !important; }
-  }
-  @media (max-width: 1024px){
-    #menu-slider { display: none; }
-    #menu-slider.is-open { display: block; }
-    #menu .menu-wrapper { padding: 1rem; }
-    #menu .menu-close {
-      display: inline-block;
-      width: 2rem; height: 2rem;
-      text-indent: -9999px;
-      position: absolute; right: 1rem; top: 1rem;
-      border: 0; background: transparent;
-    }
-    body.menu-open { overflow: hidden; }
-  }
-</style>
     <meta name="description"
           content="Stránky Městského kulturního střediska které se stará u kulturní vyžití v Trhových Svinech.">
     <meta name="keywords"
@@ -184,7 +165,7 @@
                                                                 </li>
                                                                 <li class="wnd-active   wnd-homepage">
                                                                     <a class="menu-item" role="menuitem"
-                                                                       href="https://mks-subscriber.netlify.app/"><span
+                                                                       href="https://mkssubscriber.netlify.app/"><span
                                                                             class="menu-item-text">Odběr novinek</span></a>
                                                                 </li>
                                                             </ul>
@@ -195,8 +176,7 @@
                                             </div>
                                             <div class="cart-and-mobile">
                                                 <div id="menu-mobile">
-                                                    <a href="#" id="menu-submit" role="button" aria-controls="menu" aria-expanded="false"><span></span>Menu</a>
-
+                                                    <a href="#" id="menu-submit"><span></span>Menu</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -339,39 +319,5 @@
         </footer>
     </div>
 </div>
-<script id="mks-mobile-menu-js">
-(function(){
-  var toggle = document.getElementById('menu-submit');
-  var slider = document.getElementById('menu-slider');
-  var menu   = document.getElementById('menu');
-  var closeBtn = document.querySelector('#menu .menu-close');
-  if(!toggle || !slider || !menu) return;
-
-  function setOpenState(isOpen){
-    slider.classList.toggle('is-open', isOpen);
-    document.body.classList.toggle('menu-open', isOpen);
-    toggle.setAttribute('aria-expanded', String(isOpen));
-  }
-
-  toggle.addEventListener('click', function(e){
-    e.preventDefault();
-    var nowOpen = !slider.classList.contains('is-open');
-    setOpenState(nowOpen);
-    if(nowOpen){
-      var firstItem = menu.querySelector('a.menu-item');
-      if(firstItem) firstItem.focus({preventScroll:true});
-    }
-  });
-
-  if (closeBtn){
-    closeBtn.setAttribute('role','button');
-    closeBtn.addEventListener('click', function(e){ e.preventDefault(); setOpenState(false); });
-  }
-
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') setOpenState(false);
-  });
-})();
-</script>
 </body>
 </html>
