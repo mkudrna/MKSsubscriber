@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html class="no-js" prefix="og: https://ogp.me/ns#" lang="cs">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Městské kulturní středisko Trhové Sviny</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
     <meta name="msapplication-tap-highlight" content="no">
     <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/3d/3de/3derow.css?ph=8239781201">
     <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/2v/2vp/2vpyx8.css?ph=8239781201"
@@ -60,6 +59,63 @@
             location.reload(true);
         }
     </script>
+
+    <!-- ===== STATIC MENU OVERRIDES ===== -->
+    <style id="freeze-menu">
+      /* Drž desktopové menu na všech šířkách, žádné hamburger/„Více“ */
+      #menu .menu-wrapper ul[role="menubar"]{
+        display: flex !important;
+        flex-wrap: wrap !important;       /* zalomení na více řádků */
+        align-items: center !important;
+        gap: 0.5rem;
+        margin: 0 !important;
+        padding: 0 !important;
+        list-style: none;
+      }
+      #menu .menu-wrapper ul[role="menubar"] > li{
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      #menu .menu-wrapper ul[role="menubar"] > li > a,
+      #menu .menu-wrapper ul[role="menubar"] > li > .menu-item{
+        display: inline-block !important;
+      }
+
+      /* Schovej ovladače přepínání */
+      #menu .more-text,
+      #menu .menu-toggle,
+      #menu [class*="hamburger"],
+      #menu button[aria-label="Menu"]{
+        display: none !important;
+      }
+
+      /* Zruš omezení šířek/slideru a přetečení */
+      #menu-slider, #menu-block, #menu{
+        max-width: none !important;
+        width: 100% !important;
+        position: static !important;
+      }
+      #menu .menu-wrapper{
+        white-space: normal !important;
+        overflow: visible !important;
+      }
+
+      /* Kdyby builder skrýval položky přes atributy */
+      #menu [hidden],
+      #menu [aria-hidden="true"]{
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      /* — Varianta B: horizontální posuv místo zalomení —
+         Chceš-li místo zalomení scroll, odkomentuj níže a smaž flex-wrap: wrap výše
+      #menu .menu-wrapper{ white-space: nowrap !important; overflow-x: auto !important; }
+      #menu .menu-wrapper ul[role="menubar"]{ flex-wrap: nowrap !important; }
+      */
+    </style>
+    <!-- ===== /STATIC MENU OVERRIDES ===== -->
 </head>
 
 <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe">
@@ -109,42 +165,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                          
                                             <div id="menu-slider">
-                                                <div id="menu-block">
-                                                    <nav id="menu">
-                                                        <div class="menu-font menu-wrapper">
-                                                            <a href="#" class="menu-close" rel="nofollow"
-                                                               title="Close Menu"></a>
-                                                            <ul role="menubar" aria-label="Menu" class="level-1">
-                                                                <li >
+                                                <div id="menu-block">  
+                                                  <nav id="menu">
+                                                    <div class="menu-font menu-wrapper">
+                                                            <ul role="menubar" aria-label="Menu">
+                                                                <li>
                                                                     <a class="menu-item" role="menuitem"
                                                                        href=https://www.kulturavesvinech.cz/home/><span
                                                                             class="menu-item-text">Úvod</span></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="menu-item" role="menuitem"
-                                                                       href="https://www.kulturavesvinech.cz/program-akce/"><span 
-                                                                            class="menu-item-text">Program akcí</span></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="menu-item" role="menuitem"
-                                                                       href="https://www.kulturavesvinech.cz/kino/"><span
-                                                                            class="menu-item-text">Kino</span></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="menu-item" role="menuitem"
-                                                                       href="https://www.kulturavesvinech.cz/knihovna/"><span
-                                                                            class="menu-item-text">Knihovna</span></a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="menu-item" role="menuitem"
-                                                                       href="https://www.kulturavesvinech.cz/kontakt/"><span
-                                                                            class="menu-item-text">Kontakt</span></a>
-                                                                </li>
-                                                                <li class="wnd-active   wnd-homepage">
-                                                                    <a class="menu-item" role="menuitem"
-                                                                       href="https://mkssubscriber.netlify.app/"><span
-                                                                            class="menu-item-text">Odběr novinek</span></a>
                                                                 </li>
                                                             </ul>
                                                             <span class="more-text">Více</span>
@@ -292,5 +322,33 @@
         </footer>
     </div>
 </div>
+
+<!-- ===== STATIC MENU JS FALLBACK (volitelné, ale užitečné) ===== -->
+<script>
+(function(){
+  function restoreMenu(){
+    const menu = document.querySelector('#menu ul[role="menubar"]');
+    if (!menu) return;
+
+    // Odskryj vše, co mohlo být skryté
+    menu.querySelectorAll('li[hidden], li[style*="display: none"], li[aria-hidden="true"]').forEach(li => {
+      li.hidden = false;
+      li.style.display = '';
+      li.setAttribute('aria-hidden','false');
+      menu.appendChild(li);
+    });
+
+    // Schovej ovladače (Více/hamburger)
+    document.querySelectorAll('#menu .more-text, #menu .menu-toggle, #menu [class*="hamburger"], #menu button[aria-label="Menu"]').forEach(el=>{
+      el.style.display = 'none';
+    });
+  }
+  document.addEventListener('DOMContentLoaded', restoreMenu);
+  window.addEventListener('load', restoreMenu);
+  window.addEventListener('resize', restoreMenu);
+})();
+</script>
+<!-- ===== /STATIC MENU JS FALLBACK ===== -->
+
 </body>
 </html>
