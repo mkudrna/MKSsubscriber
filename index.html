@@ -18,8 +18,8 @@
           rel="stylesheet">
     <link href="https://duyn491kcolsw.cloudfront.net/files/2e/2e5/2e5qgh.css?ph=8239781201"
           media="screen and (min-width:100000em)" rel="stylesheet" data-type="cq" disabled>
-    <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/3z/3z0/3z0o7r.css?ph=8239781201">
-    <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/4f/4f0/4f07kw.css?ph=8239781201"
+    <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/3d/3de/3derow.css?ph=8239781201">
+    <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/4b/4bm/4bm7i6.css?ph=8239781201"
           media="screen and (min-width:37.5em)">
     <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/2v/2vp/2vpyx8.css?ph=8239781201"
           data-wnd_color_scheme_file="">
@@ -29,10 +29,8 @@
           data-wnd_additive_color_file="">
     <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/4a/4ao/4ao7pp.css?ph=8239781201"
           data-wnd_typography_file="">
-    <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/1x/1xu/1xuc5m.css?ph=8239781201"
+    <link rel="stylesheet" href="https://duyn491kcolsw.cloudfront.net/files/1w/1we/1wernj.css?ph=8239781201"
           data-wnd_typography_desktop_file="" media="screen and (min-width:37.5em)" disabled="">
-    <script src="wn-loader.js" type="module" defer></script>
-    <script src="compiled.multi.js" defer></script>
     <script>
         (()=>{let e=!1;const t=()=>{if(!e&&window.innerWidth>=600){for(let e=0,t=document.querySelectorAll('head > link[href*="css"][media="screen and (min-width:37.5em)"]');e<t.length;e++)t[e].removeAttribute("disabled");e=!0}};t(),window.addEventListener("resize",t),"container"in document.documentElement.style||fetch(document.querySelector('head > link[data-type="cq"]').getAttribute("href")).then((e=>{e.text().then((e=>{const t=document.createElement("style");document.head.appendChild(t),t.appendChild(document.createTextNode(e)),import("https://duyn491kcolsw.cloudfront.net/client/js.polyfill/container-query-polyfill.modern.js").then((()=>{let e=setInterval((function(){document.body&&(document.body.classList.add("cq-polyfill-loaded"),clearInterval(e))}),100)}))}))}))})()
     </script>
@@ -84,17 +82,6 @@
             location.reload(true);
         }
     </script>
-
-    <style>
-/* Light skin pro mobilní menu – pojistka */
-@media (max-width: 1024px){
-  #menu-block, #menu-block .menu-wrapper { background:#fff !important; }
-  #menu-block .level-1 > li { border-bottom:1px solid rgba(0,0,0,.08) !important; }
-  #menu-block .menu-item, #menu-block .menu-item:visited { color:#222 !important; }
-  #menu-block .menu-item .menu-item-text { color:inherit !important; }
-}
-</style>
-    
 </head>
 
 <body class="l wt-home ac-h ac-i ac-n l-default l-d-none b-btn-fr b-btn-s-m b-btn-dso b-btn-bw-1 img-d-n img-t-o img-h-z line-solid b-e-ds lbox-d c-s-n   wnd-fe">
@@ -332,193 +319,5 @@
         </footer>
     </div>
 </div>
-    
-<style>
-/* === MKS: mobilní menu – finální vzhled & chování === */
-@media (max-width:1024px){
-  /* Vypnout webnodí mobilní slider, ať nám do toho nesahá */
-  #menu-slider{ display:none !important; }
-
-  /* Udržet hamburger nad panelem */
-  #menu-mobile a#menu-submit{ position:relative; z-index:10002; }
-
-  /* Backdrop přes celou stránku */
-  #mks-backdrop{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,.55);
-    opacity:0; pointer-events:none;
-    transition:opacity .24s ease;
-    z-index:10000;
-  }
-  #mks-backdrop.open{ opacity:1; pointer-events:auto; }
-
-  /* Panel s menu */
-  #mks-offcanvas{
-    position:fixed; top:0; right:0; bottom:0;
-    width:min(86vw, 380px);
-    background:#111; color:#fff;
-    transform:translateX(100%);
-    transition:transform .28s ease;
-    z-index:10001;           /* nad backdropem */
-    box-shadow:-6px 0 20px rgba(0,0,0,.35);
-    display:flex; flex-direction:column;
-    font: inherit;           /* vezmeme fonty webu */
-  }
-  #mks-offcanvas.open{ transform:translateX(0); }
-
-  /* Hlavička panelu */
-  #mks-offcanvas header{
-    position:sticky; top:0;
-    display:flex; align-items:center; justify-content:flex-end;
-    padding:14px 18px;
-    background:#111;
-  }
-  #mks-offcanvas .mks-close{
-    appearance:none; border:0; background:transparent;
-    color:#fff; font-size:28px; line-height:1;
-    width:44px; height:44px; cursor:pointer;
-  }
-
-  /* Seznam položek */
-  #mks-offcanvas nav{ padding:6px 16px 24px 16px; overflow:auto; }
-  #mks-offcanvas ul{ list-style:none; margin:0; padding:0; }
-  #mks-offcanvas li{ border-bottom:1px solid rgba(255,255,255,.12); }
-  #mks-offcanvas a{
-    display:block; text-decoration:none; color:#fff !important;
-    padding:14px 4px; font-weight:500; letter-spacing:.02em;
-  }
-
-  /* Zamknout scroll pozadí */
-  body.mks-lock{ overflow:hidden; }
-}
-</style>
-
-<script>
-(function(){
-  var trigger = document.getElementById('menu-submit');
-  if(!trigger) return;
-
-  var mq = window.matchMedia('(max-width:1024px)');
-  var panel, backdrop;
-
-  function ensureDOM(){
-    if(!backdrop){
-      backdrop = document.createElement('div');
-      backdrop.id = 'mks-backdrop';
-      backdrop.addEventListener('click', closeMenu);
-      document.body.appendChild(backdrop);
-    }
-    if(!panel){
-      panel = document.createElement('div');
-      panel.id = 'mks-offcanvas';
-      panel.innerHTML =
-        '<header><button class="mks-close" aria-label="Zavřít">×</button></header>' +
-        '<nav><ul class="mks-list"></ul></nav>';
-      document.body.appendChild(panel);
-
-      // přenést položky z originálního menu
-      var src = document.querySelector('#menu .level-1');
-      var dst = panel.querySelector('.mks-list');
-      if(src && dst){
-        src.querySelectorAll(':scope > li > a.menu-item').forEach(function(a){
-          var li = document.createElement('li');
-          li.appendChild(a.cloneNode(true));
-          dst.appendChild(li);
-        });
-      }
-      panel.querySelector('.mks-close').addEventListener('click', closeMenu);
-      panel.addEventListener('click', function(e){
-        if(e.target.closest('a')) closeMenu();
-      });
-    }
-  }
-
-  function openMenu(){
-    ensureDOM();
-    panel.classList.add('open');
-    backdrop.classList.add('open');
-    trigger.setAttribute('aria-expanded','true');
-    document.body.classList.add('mks-lock');
-  }
-
-  function closeMenu(){
-    if(panel) panel.classList.remove('open');
-    if(backdrop) backdrop.classList.remove('open');
-    trigger.setAttribute('aria-expanded','false');
-    document.body.classList.remove('mks-lock');
-  }
-
-  trigger.addEventListener('click', function(e){
-    if(mq.matches){
-      e.preventDefault();
-      (panel && panel.classList.contains('open')) ? closeMenu() : openMenu();
-    }
-  });
-
-  mq.addEventListener('change', function(){
-    if(!mq.matches) closeMenu();
-  });
-})();
-</script>
-
-   <style id="mks-menu-force-light-v2">
-/* Vynucený světlý vzhled mobilního menu jako na originálu */
-@media (max-width:1024px){
-
-  /* ztmavení okolí mimo panel */
-  #menu-slider{ background:rgba(0,0,0,.40) !important; }
-
-  /* samotný panel = BÍLÉ POZADÍ */
-  #menu-slider #menu-block,
-  #menu-slider #menu {
-    background:#fff !important;
-    color:#111 !important;
-  }
-
-  /* pro jistotu i vnitřek */
-  #menu-slider #menu .menu-wrapper{
-    background:#fff !important;
-  }
-
-  /* položky */
-  #menu-slider #menu .level-1>li{
-    border-bottom:1px solid rgba(0,0,0,.12) !important;
-  }
-  #menu-slider #menu a.menu-item,
-  #menu-slider #menu a.menu-item:visited{
-    display:block !important;
-    padding:16px 24px !important;
-    color:#111 !important;
-    text-decoration:none !important;
-  }
-  #menu-slider #menu .menu-item .menu-item-text{
-    color:inherit !important;
-  }
-
-  /* křížek */
-  #menu-slider #menu .menu-close{
-    position:absolute !important;
-    top:16px !important;
-    right:16px !important;
-    width:24px !important;
-    height:24px !important;
-    opacity:.8 !important;
-  }
-  #menu-slider #menu .menu-close:before{
-    content:"×" !important;
-    display:block !important;
-    text-align:center !important;
-    font-size:22px !important;
-    line-height:24px !important;
-    color:#666 !important;
-  }
-}
-</style>
-
-
-
-
-
-
 </body>
 </html>
