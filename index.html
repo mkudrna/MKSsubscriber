@@ -335,39 +335,117 @@
     </div>
 </div>
 
-<style id="no-hamburger-hard">
-/* Schovat tlačítko hamburgeru */
-#menu-mobile { display: none !important; }
+<style id="force-desktop-nav">
+  /* 1) Schovat hamburger */
+  #menu-mobile { display: none !important; }
 
-/* Zrušit „slider/overlay“ a nechat menu normálně v toku stránky */
-#menu-slider { position: static !important; transform: none !important; background: transparent !important; height: auto !important; box-shadow: none !important; }
-#menu-block  { display: block !important; position: static !important; width: auto !important; height: auto !important; }
-#menu        { display: block !important; position: static !important; }
+  /* 2) Vynutit viditelné desktop menu */
+  #menu-slider, #menu-block, #menu {
+    display: block !important;
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    height: auto !important;
+    width: auto !important;
+    z-index: auto !important;
+    background: transparent !important;
+  }
+  #menu .menu-close, #menu .more-text { display: none !important; }
 
-/* Zavřítka/„více“ na mobilu nepotřebujeme */
-#menu .menu-close, #menu .more-text { display: none !important; }
-
-/* Vodorovný (případně zalomený) seznam položek */
-#menu .level-1 {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  list-style: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-#menu .level-1 > li { display: inline-block !important; margin: 0 !important; }
-#menu .menu-item { display: block !important; padding: 12px 16px !important; text-decoration: none !important; }
+  /* 3) Vodorovný seznam položek */
+  #menu .level-1 {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+  #menu .level-1 > li { display: inline-block !important; margin: 0 !important; }
+  #menu .menu-item { display: block !important; padding: 12px 16px !important; text-decoration: none !important; }
 </style>
 
 <script>
-/* Pro jistotu odstřihnout zbytky JS, které si Webnode napojil na hamburger */
-document.addEventListener('DOMContentLoaded', function () {
-  var btn = document.getElementById('menu-submit');
-  if (btn) btn.remove();                     // odstraníme tlačítko úplně
-  var menu = document.getElementById('menu');
-  if (menu) { menu.hidden = false; menu.style.display = 'block'; }
-});
+(function () {
+  // 4) Povol desktopové CSS, Webnode je na mobilech defaultně vypíná
+  function enableDesktopCSS() {
+    document
+      .querySelectorAll('head > link[rel~="stylesheet"][media*="min-width:37.5em"]')
+      .forEach(function (l) { l.removeAttribute('disabled'); l.media = 'all'; });
+  }
+
+  // 5) Vynutit menu viditelné; když je i tak schované, vytvořit záložní menu
+  function forceDesktopMenu() {
+    var menu = document.getElementById('menu');
+    var block = document.getElementById('menu-block');
+    var slider = document.getElementById('menu-slider');
+    var mobileBtn = document.getElementById('menu-mobile');
+
+    if (mobileBtn) mobileBtn.style.display = 'none';
+
+    [menu, block, slider].forEach(function (el) {
+      if (!el) return;
+      el.style.setProperty('display','block','important');
+      el.style.setProperty('position','static','important');
+      el.style.setProperty('transform','none','important');
+      el.style.setProperty('opacity','1','important');
+      el.style.setProperty('visibility','visible','important');
+      el.style.setProperty('height','auto','important');
+      el.style.setProperty('width','auto','important');
+      el.style.setProperty('z-index','auto','important');
+      el.style.setProperty('background','transparent','important');
+      el.removeAttribute('hidden');
+    });
+
+    // Je menu přesto schované? -> vykresli fallback
+    var hidden = !menu || getComputedStyle(menu).display === 'none' || getComputedStyle(menu).visibility === 'hidden';
+    if (hidden && !document.getElementById('fallback-desktop-nav')) {
+      var links = [];
+      if (menu) {
+        menu.querySelectorAll('.menu-item').forEach(function (a) {
+          links.push({ href: a.getAttribute('href'), text: (a.textContent || '').trim() });
+        });
+      } else {
+        // tvrdá záloha podle tvého HTML
+        links = [
+          {href:'https://www.kulturavesvinech.cz/home/', text:'Úvod'},
+          {href:'https://www.kulturavesvinech.cz/program-akce/', text:'Program akcí'},
+          {href:'https://www.kulturavesvinech.cz/kino/', text:'Kino'},
+          {href:'https://www.kulturavesvinech.cz/knihovna/', text:'Knihovna'},
+          {href:'https://www.kulturavesvinech.cz/kontakt/', text:'Kontakt'},
+          {href:'https://mkssubscriber.netlify.app/', text:'Odběr novinek'},
+        ];
+      }
+
+      var nav = document.createElement('nav');
+      nav.id = 'fallback-desktop-nav';
+      nav.setAttribute('aria-label','Hlavní navigace');
+      nav.style.cssText = 'position:sticky;top:0;z-index:9999;background:#111;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.1);';
+      var ul = document.createElement('ul');
+      ul.style.cssText = 'display:flex;flex-wrap:wrap;margin:0;padding:0;list-style:none;';
+      links.forEach(function (l) {
+        var li = document.createElement('li'); li.style.cssText = 'margin:0;';
+        var a = document.createElement('a'); a.href = l.href; a.textContent = l.text;
+        a.style.cssText = 'display:block;padding:12px 14px;color:#fff;text-decoration:none;';
+        li.appendChild(a); ul.appendChild(li);
+      });
+      nav.appendChild(ul);
+
+      var header = document.querySelector('header') || document.body;
+      header.parentNode.insertBefore(nav, header.nextSibling);
+    }
+  }
+
+  // Spustit až po jejich skriptech
+  if (document.readyState === 'complete') {
+    enableDesktopCSS(); forceDesktopMenu();
+  } else {
+    window.addEventListener('load', function(){ enableDesktopCSS(); forceDesktopMenu(); });
+  }
+})();
 </script>
+
     
 </body>
 </html>
